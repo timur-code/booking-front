@@ -1,1 +1,10 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+.index-bg-img {
+    background-image: url("https://mriyaresort.com/upload/_content/c15/rcbjw5rhe9slfmrajaai5px9u6xlwa0o.jpg");
+    min-height: 30em;
+}
+
+.restaurant-card {
+    max-width: 15em;
+}

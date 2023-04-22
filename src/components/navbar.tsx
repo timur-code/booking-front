@@ -42,7 +42,7 @@ const ReNavBar = () => {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="#home">Booking</Navbar.Brand>
+                <Navbar.Brand href="/">Booking</Navbar.Brand>
                 <Navbar.Toggle/>
                 <Navbar.Collapse>
                     <Nav className="w-100 d-flex justify-content-end">

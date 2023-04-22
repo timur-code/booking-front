@@ -1,10 +1,10 @@
-import uAxios from "../../axios";
+import {uAxios} from "../../axios";
 import IUser from "@component/models/IUser";
 import Router from "next/router";
 
 
 const userApi = {
-    async login(phone:string, password:string) {
+    async login(phone: string, password: string) {
         try {
             const response = await uAxios.post('/auth/login', {phone, password});
             const res = response.data;
@@ -16,7 +16,7 @@ const userApi = {
             localStorage.setItem('access_token', token);
             localStorage.setItem('refresh_token', refreshToken);
 
-            const user:IUser = await this.getCurrentUser();
+            const user: IUser = await this.getCurrentUser();
             localStorage.setItem('me', JSON.stringify(user));
             Router.reload();
         } catch (error: any) {
@@ -49,7 +49,7 @@ const userApi = {
     async getCurrentUser() {
         try {
             const response = await uAxios.get('/auth/me');
-            const userInfo:IUser = response.data as IUser;
+            const userInfo: IUser = response.data as IUser;
             console.log("User Info: ", userInfo);
             return userInfo;
         } catch (error: any) {
