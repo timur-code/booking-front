@@ -20,15 +20,15 @@ const RestaurantCard: React.FC<RestaurantProps> = ({restaurant}) => {
     };
 
     return (
-        <div className="restaurant-card border border-success mb-2 border-opacity-25 d-flex rounded"
-             style={cardStyle}
-             onClick={() => handleClick(restaurant)}
+        <Link className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded text-decoration-none"
+              href={`/restaurant/${restaurant.id}`}
+              style={cardStyle}
         >
-            <div className="restaurant-text text-white p-3 d-flex flex-column justify-content-end">
+            <div className="lister-card-text text-white p-3 d-flex flex-column justify-content-end">
                 <h3>{restaurant.name}</h3>
                 <p>{restaurant.description}</p>
             </div>
-        </div>
+        </Link>
     );
 };
 

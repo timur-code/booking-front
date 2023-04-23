@@ -18,13 +18,14 @@
     height: 30em;
 }
 
-.restaurant-card {
+.lister-card {
     width: 12em;
     height: 15em;
-    padding-top: 8em;
+    padding-top: 6em;
     overflow: hidden;
 }
 
-.restaurant-text {
+.lister-card-text {
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
 }

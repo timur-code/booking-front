@@ -10,7 +10,7 @@ const ReNavBar = () => {
 
     useEffect(() => {
         getUser()
-    }, [user]);
+    }, []);
 
     const getUser = () => {
         const userData = localStorage.getItem('me');
