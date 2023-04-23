@@ -10,6 +10,7 @@ const mainApi = {
                 id: item.id,
                 name: item.name,
                 description: item.description,
+                img: item.img
             }));
             return fetchedRestaurants;
         } catch (error: any) {
