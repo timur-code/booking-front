@@ -16,6 +16,24 @@ const mainApi = {
         } catch (error: any) {
             throw error.response.data;
         }
+    },
+
+    async getRestaurantById(id: string) {
+        try {
+            const response = await reAxios.get(`/restaurant/${id}`);
+            return response.data.data;
+        } catch (error: any) {
+            throw error.response.data;
+        }
+    },
+
+    async getRestaurantMenuById(id: string) {
+        try {
+            const response = await reAxios.get(`/restaurant/${id}`);
+            return response.data.data;
+        } catch (error: any) {
+            throw error.response.data;
+        }
     }
 };
 

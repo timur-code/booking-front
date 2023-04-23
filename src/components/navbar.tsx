@@ -40,7 +40,7 @@ const ReNavBar = () => {
     };
 
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" sticky={"top"}>
             <Container>
                 <Navbar.Brand href="/">Booking</Navbar.Brand>
                 <Navbar.Toggle/>

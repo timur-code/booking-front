@@ -21,7 +21,7 @@ const RestaurantList: React.FC = () => {
 
     return (
         <div className="d-flex justify-content-center pt-5">
-            <div className="restaurant-list d-flex justify-content-evenly w-50">
+            <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
                 {restaurants.map((restaurant) => (
                     <RestaurantCard key={restaurant.id} restaurant={restaurant}/>
                 ))}

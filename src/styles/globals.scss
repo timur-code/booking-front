@@ -1,8 +1,21 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+.center-large {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (min-width: 1200px) {
+    .center-large {
+        width: 60%; /* Adjust the width according to your needs */
+    }
+}
+
+
 .index-bg-img {
-    background-image: url("https://mriyaresort.com/upload/_content/c15/rcbjw5rhe9slfmrajaai5px9u6xlwa0o.jpg");
-    min-height: 30em;
+    display: block;
+    position: relative;
+    height: 30em;
 }
 
 .restaurant-card {

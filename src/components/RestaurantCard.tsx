@@ -1,6 +1,7 @@
 import React from 'react';
 import IRestaurant from "@component/models/IRestaurant";
 import Router from "next/router";
+import Link from "next/link";
 
 interface RestaurantProps {
     restaurant: IRestaurant;
@@ -21,7 +22,8 @@ const RestaurantCard: React.FC<RestaurantProps> = ({restaurant}) => {
     return (
         <div className="restaurant-card border border-success mb-2 border-opacity-25 d-flex rounded"
              style={cardStyle}
-             onClick={() => handleClick(restaurant)}>
+             onClick={() => handleClick(restaurant)}
+        >
             <div className="restaurant-text text-white p-3 d-flex flex-column justify-content-end">
                 <h3>{restaurant.name}</h3>
                 <p>{restaurant.description}</p>
