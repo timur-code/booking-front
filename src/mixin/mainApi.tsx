@@ -43,6 +43,19 @@ const mainApi = {
         try {
             const response = await reAxios.post(`/booking`, booking);
             console.log("response temp booking: ", response.data)
+            return response.data.data.id
+        } catch (error: any) {
+            throw error.response;
+        }
+    },
+
+    async confirmBooking(id: number | null) {
+        if (!id) {
+            return
+        }
+        try {
+            const response = await reAxios.post(`/booking/${id}/confirm`);
+            console.log("response confirm booking: ", response.data)
         } catch (error: any) {
             throw error.response.data;
         }

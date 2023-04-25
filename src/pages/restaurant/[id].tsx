@@ -6,6 +6,9 @@ import IRestaurant from "@component/models/IRestaurant";
 import IMenu from "@component/models/IMenu";
 import MenuList from "@component/components/MenuList";
 import IBooking from "@component/models/IBooking";
+import TimePicker from "@component/input/timepicker";
+import {Form} from "react-bootstrap";
+
 
 interface RestaurantProps {
     id: number;
@@ -14,9 +17,11 @@ interface RestaurantProps {
 const Restaurant: React.FC<RestaurantProps> = ({id}) => {
     const [restaurant, setRestaurant] = useState<IRestaurant>();
     const [menu, setMenu] = useState<IMenu>();
+    const [shouldCreateBooking, setShouldCreateBooking] = useState(false);
     const [booking, setBooking] = useState<IBooking>({
+        id: null,
         restaurantId: id,
-        timeStart: '', // You can set an initial value if needed
+        timeStart: '2023-01-01T00:00:00Z', // You can set an initial value if needed
         preorder: []
     });
 
@@ -27,25 +32,41 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                 preorder: [...prevState.preorder, itemId]
             };
         });
+        setShouldCreateBooking(true);
     };
 
-    const handleTimeChange = (event: any) => {
+    useEffect(() => {
+        if (shouldCreateBooking) {
+            mainApi.createTempBooking(booking).then(resId => {
+                setBooking((prevState) => {
+                    return {
+                        ...prevState,
+                        id: resId
+                    };
+                });
+            });
+            setShouldCreateBooking(false);
+        }
+    }, [booking, shouldCreateBooking]);
+
+
+    const handleTimeChange = (date: string, time: string) => {
         setBooking((prevState) => {
             return {
                 ...prevState,
-                timeStart: event.target.value + ':00Z'
+                timeStart: `${date}T${time}:00Z`,
             };
         });
     };
 
     const handleBooking = () => {
         setBooking((prevState) => {
-           return {
-               ...prevState,
-               timeStart: prevState.timeStart
-           }
+            return {
+                ...prevState,
+                timeStart: prevState.timeStart
+            }
         });
-        mainApi.createTempBooking(booking).then(r => console.log(r));
+        mainApi.confirmBooking(booking.id).then(r => console.log(r));
     }
 
     useEffect(() => {
@@ -81,17 +102,21 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                     priority
                 />
             </div>
-            <div className="center-large">
-                <h1>{restaurant?.name}</h1>
-                <p>{restaurant?.description}</p>
-                <button className="btn btn-success" onClick={handleBooking}>Бронировать</button>
-                <label htmlFor="timePicker">Choose a time:</label>
-                <input
-                    type="datetime-local"
-                    id="timePicker"
-                    value={booking.timeStart}
-                    onChange={handleTimeChange}
-                />
+            <div className="center-large mt-3">
+                <div className="d-flex flex-column">
+                    <h1>{restaurant?.name}</h1>
+                    <p>{restaurant?.description}</p>
+                </div>
+                <div className="border border-1 rounded d-flex flex-column p-3 gap-1">
+                    <p>Сделайте бронь через нашу систему! Авторизуйтесь, укажите время для брони и предзакажите еду из
+                        меню</p>
+                    <Form.Label>Укажите время:</Form.Label>
+                    <TimePicker
+                        timeStart={booking.timeStart}
+                        onTimeChange={(date, time) => handleTimeChange(date, time)}
+                    />
+                    <button className="btn btn-success" onClick={handleBooking}>Бронировать</button>
+                </div>
                 {
                     menu &&
                     <MenuList

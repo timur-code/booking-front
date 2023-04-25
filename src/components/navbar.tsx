@@ -50,8 +50,8 @@ const ReNavBar = () => {
                         {!user && <Nav.Link onClick={handleOpenModal}>Войти</Nav.Link>}
                         {user && (
                             <NavDropdown title={user.firstName} id="user-dropdown">
-                                <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                                {/*<NavDropdown.Item href="/profile">Профиль</NavDropdown.Item>*/}
+                                <NavDropdown.Item onClick={handleLogout}>Выйти</NavDropdown.Item>
                             </NavDropdown>
                         )}
                     </Nav>
