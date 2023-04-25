@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import RestaurantList from "@component/components/RestaurantList";
 import Image from "next/image";
 
@@ -8,7 +8,7 @@ const LoginPage = () => {
         <div>
             <div className="index-bg-img">
                 <Image
-                    src="/bg.jpg"
+                    src="/bag.jpg"
                     alt="Picture of the author"
                     fill={true}
                     priority

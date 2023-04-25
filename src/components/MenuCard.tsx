@@ -18,7 +18,7 @@ const RestaurantCard: React.FC<MenuCardProps> = ({item, restaurantId, addToPreor
     }
 
     const cardStyle = {
-        backgroundImage: (item && item.images.length > 0) ? `url(${item.images[0]})` : 'url(/pasta.webp)',
+        backgroundImage: (item && item.images.length > 0) ? `url(${item.images[0]})` : 'url(/item.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
     };

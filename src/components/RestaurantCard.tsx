@@ -14,7 +14,7 @@ const RestaurantCard: React.FC<RestaurantProps> = ({restaurant}) => {
     }
 
     const cardStyle = {
-        backgroundImage: restaurant.img ? `url(${restaurant.img})` : 'url(/pasta.webp)',
+        backgroundImage: restaurant.img ? `url(${restaurant.img})` : 'url(/item.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
     };

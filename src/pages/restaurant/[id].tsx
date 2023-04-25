@@ -96,7 +96,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         <div>
             <div className="index-bg-img">
                 <Image
-                    src="/bg.jpg"
+                    src="/bag.jpg"
                     alt="Picture of the author"
                     fill={true}
                     priority

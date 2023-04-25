@@ -8,7 +8,7 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ id }) => {
     return (
         <div>
-            <h1>Restaurant {id}</h1>
+            <h1>Profile {id}</h1>
             {/* Render your restaurant data */}
         </div>
     );
