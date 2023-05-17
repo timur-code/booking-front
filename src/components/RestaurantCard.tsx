@@ -21,15 +21,21 @@ const RestaurantCard: React.FC<RestaurantProps> = ({restaurant}) => {
     };
 
     return (
-        <Link className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded text-decoration-none"
-              href={`/restaurant/${restaurant.id}`}
-              style={cardStyle}
-        >
-            <div className="lister-card-text text-white p-3 d-flex flex-column justify-content-end">
+        <div className="border-card">
+            <div className="wrap-card">
+                <Link className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded text-decoration-none"
+                      href={`/restaurant/${restaurant.id}`}
+                      style={cardStyle}
+                >
+                <div className="loop-action-card">
+                    <a href="" className="add-to-cart">Choose</a>
+                </div>
+                </Link>
                 <h3>{restaurant.name}</h3>
                 <p>{restaurant.description}</p>
             </div>
-        </Link>
+        </div>
+
     );
 };
 

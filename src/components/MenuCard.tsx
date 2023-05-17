@@ -24,13 +24,17 @@ const RestaurantCard: React.FC<MenuCardProps> = ({item, restaurantId, addToPreor
     };
 
     return (
-        <div className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded"
-             style={cardStyle}
-        >
-            <div className="lister-card-text text-white p-3 d-flex flex-column justify-content-end">
-                <h3>{item.name}</h3>
-                <p>{item.description}</p>
-                <button onClick={handleAdd}>Add</button>
+        <div className="border-card">
+            <div className="wrap-card">
+                <div className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded"
+                     style={cardStyle}
+                />
+                    <div>
+                        <h3>{item.name}</h3>
+                        <p>{item.description}</p>
+
+                        <button onClick={handleAdd} type="submit">Add</button>
+                    </div>
             </div>
         </div>
     );
