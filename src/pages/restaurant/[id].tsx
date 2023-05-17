@@ -93,29 +93,25 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
     }, []);
 
     return (
-        <div>
-            <div className="index-bg-img">
-                <Image
-                    src="/bag.jpg"
-                    alt="Picture of the author"
-                    fill={true}
-                    priority
-                />
-            </div>
-            <div className="center-large mt-3">
-                <div className="d-flex flex-column">
+        <section className="skill" id="skills">
+            <div className="container skill-bx">
+                <div className=" wow zoomIn">
                     <h1>{restaurant?.name}</h1>
                     <p>{restaurant?.description}</p>
                 </div>
-                <div className="border border-1 rounded d-flex flex-column p-3 gap-1">
-                    <p>Сделайте бронь через нашу систему! Авторизуйтесь, укажите время для брони и предзакажите еду из
-                        меню</p>
+                <p>Сделайте бронь через нашу систему! Авторизуйтесь, укажите время для брони и предзакажите еду из
+                меню</p>
+                <div>
+
                     <Form.Label>Укажите время:</Form.Label>
+                    <div>
                     <TimePicker
                         timeStart={booking.timeStart}
                         onTimeChange={(date, time) => handleTimeChange(date, time)}
                     />
-                    <button className="btn btn-success" onClick={handleBooking}>Бронировать</button>
+
+                    <button className="btn btn-success " type='submit' onClick={handleBooking}>Бронировать</button>
+                    </div>
                 </div>
                 {
                     menu &&
@@ -129,7 +125,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                     !menu && <div>404 - Меню не найдено</div>
                 }
             </div>
-        </div>
+        </section>
     );
 };
 

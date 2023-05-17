@@ -3,6 +3,7 @@ import IRestaurant from "@component/models/IRestaurant";
 import Router from "next/router";
 import Link from "next/link";
 
+
 interface RestaurantProps {
     restaurant: IRestaurant;
 }

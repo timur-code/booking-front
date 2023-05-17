@@ -6,17 +6,19 @@ const LoginPage = () => {
 
     return (
         <div>
-            <div className="index-bg-img">
+        <div>
+            {/*<div className="index-bg-img">
                 <Image
                     src="/bag.jpg"
                     alt="Picture of the author"
                     fill={true}
                     priority
                 />
-            </div>
+            </div>*/}
             <div className="center-large">
                 <RestaurantList/>
             </div>
+        </div>
         </div>
     );
 };

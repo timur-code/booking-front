@@ -20,13 +20,21 @@ const RestaurantList: React.FC = () => {
     }, []);
 
     return (
+        <section className="skill" id="skills">
+            <div className="container skill-bx">
+                <div className=" wow zoomIn">
+                    <h1>Restaurants</h1>
+
+                </div>
         <div className="d-flex justify-content-center pt-5">
-            <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
+            <div className="restaurant-list d-flex justify-content-around gap-5 flex-wrap">
                 {restaurants.map((restaurant) => (
                     <RestaurantCard key={restaurant.id} restaurant={restaurant}/>
                 ))}
             </div>
         </div>
+            </div>
+        </section>
     );
 };
 

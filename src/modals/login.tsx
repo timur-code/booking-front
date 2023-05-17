@@ -40,18 +40,18 @@ const LoginModal: React.FC<IModalProps> = ({onClose, show}) => {
                 <Modal.Title>Вход</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} >
                     <Form.Group className="mb-3">
                         <Form.Label>Номер телефона</Form.Label>
                         <Form.Control type="tel" placeholder="" onChange={handlePhoneNumberChange}/>
                     </Form.Group>
 
-                    <Form.Group className="mb-3">
+                    <Form.Group className="mb-3 ">
                         <Form.Label>Пароль</Form.Label>
                         <Form.Control type="password" placeholder="Введите пароль" onChange={handlePasswordChange}/>
                     </Form.Group>
                     <Button variant="primary" type="submit">
-                        Войти
+                        Войт1и
                     </Button>
                     {error && <div>{error}</div>}
                 </Form>
