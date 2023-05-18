@@ -19,10 +19,16 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
     };
 
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-6">
-                    <h1>Your Cart</h1>
+        <div>
+            <div className="cart-name wow zoomIn">
+                <h1>Restaurants</h1>
+
+            </div>
+
+        <div className="d-flex justify-content-center pt-5">
+
+            <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
+
                     {cartItems.length > 0 ? (
                         cartItems.map((item) => (
                             <CartItem
