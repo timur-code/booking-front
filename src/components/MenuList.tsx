@@ -14,11 +14,12 @@ const MenuList: React.FC<MenuListProps> = ({menu, restaurantId, addToPreorder}) 
             <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
                 {menu?.menuItems.map(item => (
                     <MenuCard
+
                         key={item.id}
                         item={item}
                         restaurantId={restaurantId}
                         addToPreorder={addToPreorder}
-                    />
+                    ></MenuCard>
                 ))}
             </div>
         </div>

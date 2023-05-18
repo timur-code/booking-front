@@ -6,7 +6,7 @@ import IMenuItem from "@component/models/IMenuItem";
 import {GetServerSideProps} from "next";
 import cookie from "cookie";
 
-const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({ initialCartItems }) => {
+const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCartItems}) => {
 
     const [cartItems, setCartItems] = React.useState(initialCartItems);
 
@@ -19,20 +19,24 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({ initialCar
     };
 
     return (
-        <div>
-            <h1>Your Cart</h1>
-            {cartItems.length > 0 ? (
-                cartItems.map((item) => (
-                    <CartItem
-                        key={item.id}
-                        item={item}
-                        quantity={0}
-                        onRemove={() => handleRemove(item.id)}
-                    />
-                ))
-            ) : (
-                <p>No items in cart</p>
-            )}
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <h1>Your Cart</h1>
+                    {cartItems.length > 0 ? (
+                        cartItems.map((item) => (
+                            <CartItem
+                                key={item.id}
+                                item={item}
+                                quantity={1}
+                                onRemove={() => handleRemove(item.id)}
+                            />
+                        ))
+                    ) : (
+                        <p>No items in cart</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

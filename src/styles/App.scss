@@ -343,6 +343,28 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     width: 40%;
     z-index: -4;
 }
+/************ Cards ************/
+.card-button{
+    background: linear-gradient(90.21deg, #AA367C -5.91%, #4A2FBD 111.58%);
+    padding: 10px 50px;
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 18px;
+    text-align: center;
+
+}
+.cafe-button{
+    background: linear-gradient(90.21deg, #AA367C -5.91%, #4A2FBD 111.58%);
+    margin-top: 20px;
+    padding: 10px 250px;
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 18px;
+    text-align: center;
+}
+
 
 /************ Projects Css ************/
 .project {
@@ -542,8 +564,17 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     width: 100%;
 }
 /************ Login ************/
+.login-modal{
+    width: 300px;
+    margin: 0 auto;
+    background: #B8B8B8;
+}
+/************ Button ************/
+.registration-button{
 
+}
 
+/************ Cards ************/
 .border-card {
     width: 300px;
     margin: 0 auto;
@@ -642,8 +673,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 
 
-
-/************ Restaurant card ************/
 
 
 

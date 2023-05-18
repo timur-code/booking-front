@@ -113,7 +113,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                             onTimeChange={(date, time) => handleTimeChange(date, time)}
                         />
 
-                        <button className="btn btn-success " type='submit' onClick={handleBooking}>Бронировать</button>
+                        <button className="cafe-button" type='submit' onClick={handleBooking}>Бронировать</button>
                     </div>
                 </div>
                 {

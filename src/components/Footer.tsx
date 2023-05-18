@@ -20,7 +20,7 @@ export const Footer = () => {
                             <a href="#"><img src='/assets/img/nav-icon2.svg' alt="Icon" /></a>
                             <a href="#"><img src='/assets/img/nav-icon3.svg' alt="Icon" /></a>
                         </div>
-                        <p>Copyright 2022. All Rights Reserved</p>
+                        <p>Muffin table/food reservation app.</p>
                     </Col>
                 </Row>
             </Container>

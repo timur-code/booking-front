@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from "js-cookie";
 
 const reAxios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BOOKING_SERVICE,
@@ -6,7 +7,7 @@ const reAxios = axios.create({
 
 reAxios.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token');
+        const token = Cookies.get('access_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -28,7 +29,7 @@ const uAxios = axios.create({
 
 uAxios.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token');
+        const token = Cookies.get('access_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -45,7 +46,7 @@ uAxios.interceptors.response.use(undefined, async error => {
 });
 
 const refreshToken = async (error) => {
-    const refreshToken = localStorage.getItem('refresh_token');
+    const refreshToken = Cookies.get('refresh_token');
     if (refreshToken) {
         try {
             // Request a new access token using the refresh token
@@ -55,7 +56,7 @@ const refreshToken = async (error) => {
             const newAccessToken = response.data.access_token;
 
             // Update the token in axios instance and localStorage
-            localStorage.setItem('access_token', newAccessToken);
+            Cookies.set('access_token', newAccessToken);
 
             // Update the token in the Axios instance
             uAxios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;

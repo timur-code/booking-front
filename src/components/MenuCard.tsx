@@ -8,13 +8,13 @@ import IMenuItem from "@component/models/IMenuItem";
 interface MenuCardProps {
     item: IMenuItem;
     restaurantId: number;
-    addToPreorder: (itemId: number, quantity: number) => void;
+    addToPreorder: (itemId: number) => void;
 }
 
-const RestaurantCard: React.FC<MenuCardProps> = ({item, addToPreorder}) => {
+const RestaurantCard: React.FC<MenuCardProps> = ({item, restaurantId, addToPreorder}) => {
 
     const handleAdd = () => {
-        addToPreorder(item.id, 1);
+        addToPreorder(item.id);
     }
 
     const cardStyle = {
@@ -33,9 +33,7 @@ const RestaurantCard: React.FC<MenuCardProps> = ({item, addToPreorder}) => {
                         <h3>{item.name}</h3>
                         <p>{item.description}</p>
 
-                        <button className="loop-action-card">
-                            <a onClick={handleAdd}>Add</a>
-                        </button>
+                        <button onClick={handleAdd} type="submit" className="card-button">Add</button>
                     </div>
             </div>
         </div>
