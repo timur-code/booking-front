@@ -35,7 +35,7 @@ const LoginModal: React.FC<IModalProps> = ({onClose, show}) => {
     };
 
     return (
-        <Modal show={show} onHide={onClose}>
+        <Modal className="text-dark" show={show} onHide={onClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Вход</Modal.Title>
             </Modal.Header>
@@ -51,7 +51,7 @@ const LoginModal: React.FC<IModalProps> = ({onClose, show}) => {
                         <Form.Control type="password" placeholder="Введите пароль" onChange={handlePasswordChange}/>
                     </Form.Group>
                     <Button variant="primary" type="submit">
-                        Войт1и
+                        Войти
                     </Button>
                     {error && <div>{error}</div>}
                 </Form>

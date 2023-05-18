@@ -2,6 +2,10 @@ import {reAxios} from "../../axios";
 import IRestaurant from "@component/models/IRestaurant";
 import IMenu from "@component/models/IMenu";
 import IBooking from "@component/models/IBooking";
+import IMenuItem from "@component/models/IMenuItem";
+import ICartItem from "@component/models/ICartItem";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 
 const mainApi = {
@@ -16,7 +20,7 @@ const mainApi = {
             }));
             return fetchedRestaurants;
         } catch (error: any) {
-            throw error.response.data;
+            throw error;
         }
     },
 
@@ -38,6 +42,35 @@ const mainApi = {
             throw error.response.data;
         }
     },
+
+    async getItemById(id: number, accessToken: string) {
+        console.log(`access ${accessToken}`)
+        const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + `/menu/item/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // Include the access token in the headers if required
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+        if (!response.ok) {
+            console.error(`Response status was not OK: ${response.status}`);
+            return;
+        }
+        const item = await response.json();
+        return item;
+    },
+
+    async getCartItems(items: Array<ICartItem>, accessToken: string) {
+        try {
+            const itemPromises = items.map(item => this.getItemById(item.itemId, accessToken));
+            const list = await Promise.all(itemPromises);
+            return list;
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
 
     async createTempBooking(booking: IBooking) {
         try {

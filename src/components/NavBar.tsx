@@ -3,13 +3,9 @@ import {Navbar, Container, Nav, NavDropdown} from 'react-bootstrap';
 import LoginModal from "@component/modals/login";
 import IUser from "@component/models/IUser";
 import userApi from "@component/mixin/userApi";
-import logo from '../../public/assets/img/logo.svg';
-import navIcon1 from '../../public/assets/img/nav-icon1.svg';
-import navIcon2 from '../../public/assets/img/nav-icon2.svg';
-import navIcon3 from '../../public/assets/img/nav-icon3.svg';
-import {
-    BrowserRouter as Router
-} from "react-router-dom";
+import Image from "next/image";
+import Link from "next/link";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
     const [activeLink, setActiveLink] = useState('home');
@@ -34,7 +30,7 @@ const NavBar = () => {
         setActiveLink(value);
     }*/
     const getUser = () => {
-        const userData = localStorage.getItem('me');
+        const userData = Cookies.get('me');
         if (userData) {
             setUser(JSON.parse(userData) as IUser);
         }
@@ -63,7 +59,7 @@ const NavBar = () => {
         <Navbar  className={scrolled ? "scrolled" : ""}>
             <Container>
                 <Navbar.Brand href="/">
-                    <img src='/assets/img/logo.svg' alt="Logo" />
+                    <Image width={240} height={100} src='/assets/img/logo.svg' alt="Logo" />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav">
                     <span className="navbar-toggler-icon"></span>
@@ -73,9 +69,13 @@ const NavBar = () => {
                         <Nav.Link href="/" className={activeLink === 'home' ? 'active navbar-link' : 'navbar-link'} >Главная</Nav.Link>
                         {!user && <Nav.Link onClick={handleOpenModal} className={activeLink === 'home' ? 'active navbar-link' : 'navbar-link'}>Войти</Nav.Link>}
                         {user && (
-                            <NavDropdown title={user.firstName} id="user-dropdown">
-                                {/*<NavDropdown.Item href="/profile">Профиль</NavDropdown.Item>*/}
-                                <NavDropdown.Item onClick={handleLogout} >Выйти</NavDropdown.Item>
+                            <NavDropdown className={'nav-user'} title={user.firstName} id="user-dropdown">
+                                <NavDropdown.Item>
+                                    <Link href={'/profile'}>Профиль</Link>
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href="/profile/cart">Корзина</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleLogout}>Выйти</NavDropdown.Item>
+
                             </NavDropdown>
                         )}
                     </Nav>

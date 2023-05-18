@@ -97,7 +97,7 @@ nav.navbar.scrolled {
 nav.navbar a.navbar-brand {
     width: 9%;
 }
-nav.navbar .navbar-nav .nav-link.navbar-link {
+nav.navbar .navbar-nav .nav-link.navbar-link, .nav-user> a:first-child {
     font-weight: 400;
     color: #fff !important;
     letter-spacing: 0.8px;

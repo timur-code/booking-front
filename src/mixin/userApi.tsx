@@ -1,6 +1,7 @@
 import {uAxios} from "../../axios";
 import IUser from "@component/models/IUser";
 import Router from "next/router";
+import Cookies from 'js-cookie';
 
 
 const userApi = {
@@ -13,11 +14,11 @@ const userApi = {
             const refreshToken = res.data.refresh_token;
 
             // Save the token in localStorage or use another storage method
-            localStorage.setItem('access_token', token);
-            localStorage.setItem('refresh_token', refreshToken);
+            Cookies.set('access_token', token);
+            Cookies.set('refresh_token', refreshToken);
 
             const user: IUser = await this.getCurrentUser();
-            localStorage.setItem('me', JSON.stringify(user));
+            Cookies.set('me', JSON.stringify(user));
             Router.reload();
         } catch (error: any) {
             throw error.response.data;
@@ -28,9 +29,9 @@ const userApi = {
         try {
             await uAxios.post('/auth/logout');
             // Remove the token from localStorage or another storage method
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            localStorage.removeItem('me');
+            Cookies.remove('access_token');
+            Cookies.remove('refresh_token');
+            Cookies.remove('me');
             Router.reload();
         } catch (error: any) {
             throw error.response.data;

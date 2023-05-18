@@ -5,7 +5,7 @@ import MenuCard from "@component/components/MenuCard";
 interface MenuListProps {
     menu: IMenu
     restaurantId: number
-    addToPreorder: (itemId: number) => void;
+    addToPreorder: (itemId: number, quantity: number) => void;
 }
 
 const MenuList: React.FC<MenuListProps> = ({menu, restaurantId, addToPreorder}) => {

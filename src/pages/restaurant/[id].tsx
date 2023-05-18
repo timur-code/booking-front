@@ -1,5 +1,4 @@
 import {GetServerSideProps} from 'next';
-import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import mainApi from "@component/mixin/mainApi";
 import IRestaurant from "@component/models/IRestaurant";
@@ -8,6 +7,7 @@ import MenuList from "@component/components/MenuList";
 import IBooking from "@component/models/IBooking";
 import TimePicker from "@component/input/timepicker";
 import {Form} from "react-bootstrap";
+import cart from "@component/store/cart";
 
 
 interface RestaurantProps {
@@ -24,15 +24,18 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         timeStart: '2023-01-01T00:00:00Z', // You can set an initial value if needed
         preorder: []
     });
+    console.log("cart: ", cart)
 
-    const addToPreorder = (itemId: number) => {
-        setBooking((prevState) => {
-            return {
-                ...prevState,
-                preorder: [...prevState.preorder, itemId]
-            };
-        });
-        setShouldCreateBooking(true);
+    const handleRemove = (id: number) => {
+
+        console.log("cart: ", cart)
+    };
+
+    const handleAdd = (id: number, quantity: number) => {
+        if (restaurant) {
+            cart.addToCart(restaurant.id, id)
+        }
+        console.log("cart: ", cart)
     };
 
     useEffect(() => {
@@ -100,17 +103,17 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                     <p>{restaurant?.description}</p>
                 </div>
                 <p>Сделайте бронь через нашу систему! Авторизуйтесь, укажите время для брони и предзакажите еду из
-                меню</p>
+                    меню</p>
                 <div>
 
                     <Form.Label>Укажите время:</Form.Label>
                     <div>
-                    <TimePicker
-                        timeStart={booking.timeStart}
-                        onTimeChange={(date, time) => handleTimeChange(date, time)}
-                    />
+                        <TimePicker
+                            timeStart={booking.timeStart}
+                            onTimeChange={(date, time) => handleTimeChange(date, time)}
+                        />
 
-                    <button className="btn btn-success " type='submit' onClick={handleBooking}>Бронировать</button>
+                        <button className="btn btn-success " type='submit' onClick={handleBooking}>Бронировать</button>
                     </div>
                 </div>
                 {
@@ -118,7 +121,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                     <MenuList
                         menu={menu}
                         restaurantId={id}
-                        addToPreorder={addToPreorder}
+                        addToPreorder={handleAdd}
                     />
                 }
                 {
