@@ -74,6 +74,7 @@ const NavBar = () => {
                                     <Link href={'/profile'}>Профиль</Link>
                                 </NavDropdown.Item>
                                 <NavDropdown.Item href="/profile/cart">Корзина</NavDropdown.Item>
+                                <NavDropdown.Item href="/profile/support">Поддержка</NavDropdown.Item>
                                 <NavDropdown.Item onClick={handleLogout}>Выйти</NavDropdown.Item>
 
                             </NavDropdown>
