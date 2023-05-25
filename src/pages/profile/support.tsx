@@ -32,11 +32,11 @@ const Support: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCartI
 
                 <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
                     <form >
-                        <label className="restaurant-list d-flex gap-4 flex-wrap ">
-                            <input type="text" name="name" className="col-11" placeholder="Phone number"/>
-                            <input type="text" name="name"  className="col-11" placeholder="Text"/>
+                        <label className="restaurant-list d-flex justify-content-center gap-4 flex-wrap rounded-sm">
+                            <input type="text" name="phone" className="col-11 pt-2 mb-3 rounded-lg" placeholder="Phone number"/>
+                            <input type="text" name="text"  className="col-11 pt-2 mb-3" placeholder="Text"/>
                         </label>
-                        <input type="submit" value="Submit" className="cafe-button" />
+                        <input type="submit" value="Submit" className="cafe-button mb-4" />
                     </form>
 
                 </div>
@@ -44,23 +44,5 @@ const Support: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCartI
         </div>
     );
 };
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    let initialCartItems = new Array<IMenuItem>;
-
-    const cookies = cookie.parse(context.req.headers.cookie || '');
-
-    try {
-        initialCartItems = await mainApi.getCartItems(JSON.parse(cookies.cart).items, cookies.access_token);
-    } catch (error) {
-        console.error('Failed to fetch cart items:', error);
-    }
-
-    return {
-        props: {
-            initialCartItems,
-        }
-    }
-}
 
 export default Support;
