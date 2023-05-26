@@ -27,6 +27,8 @@
     "nodemailer": "^6.9.2",
     "postcss": "8.4.23",
     "react": "18.2.0",
+    "react-aria": "^3.25.0",
+    "react-aria-components": "^1.0.0-alpha.4",
     "react-bootstrap": "^2.7.4",
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "18.2.0",

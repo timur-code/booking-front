@@ -42,7 +42,9 @@ uAxios.interceptors.response.use(undefined, async error => {
     //TODO: поменять чтобы отрабатывал на 401 только
     console.log(`AXIOS ERROR: ${error}`)
     // Check if there is a refresh token available
-    await refreshToken(error);
+    if (!error.contains("500")) {
+        await refreshToken(error);
+    }
 });
 
 const refreshToken = async (error) => {
@@ -52,11 +54,12 @@ const refreshToken = async (error) => {
             // Request a new access token using the refresh token
             const response = await axios.create({
                 baseURL: process.env.NEXT_PUBLIC_USER_SERVICE,
-            }).post('/auth/refresh', {refresh_token: refreshToken});
+            }).post('/auth/refresh', {refreshToken: refreshToken});
             const newAccessToken = response.data.access_token;
 
             // Update the token in axios instance and localStorage
             Cookies.set('access_token', newAccessToken);
+            console.log("ACCESS TOKEN ", newAccessToken)
 
             // Update the token in the Axios instance
             uAxios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
@@ -70,13 +73,13 @@ const refreshToken = async (error) => {
                 : uAxios.request(originalRequest);
         } catch (refreshError) {
             // If the refresh token is also invalid, ask the user to log in again
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
+            Cookies.remove('access_token');
+            Cookies.remove('refresh_token');
             // Redirect the user to the login page or show a login modal
         }
     } else {
         // If there's no refresh token, ask the user to log in again
-        localStorage.removeItem('access_token');
+        Cookies.remove('access_token');
         // Redirect the user to the login page or show a login modal
     }
 }

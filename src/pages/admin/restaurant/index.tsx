@@ -1,12 +1,5 @@
 import {GetServerSideProps} from 'next';
-import Image from "next/image";
 import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import mainApi from "@component/mixin/mainApi";
-import IRestaurant from "@component/models/IRestaurant";
-import IMenu from "@component/models/IMenu";
-import MenuList from "@component/components/MenuList";
-import IBooking from "@component/models/IBooking";
-import TimePicker from "@component/input/timepicker";
 import {Button, Form} from "react-bootstrap";
 import adminApi from "@component/mixin/adminApi";
 import {useRouter} from "next/router";

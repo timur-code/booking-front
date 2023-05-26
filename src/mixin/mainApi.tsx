@@ -2,10 +2,7 @@ import {reAxios} from "../../axios";
 import IRestaurant from "@component/models/IRestaurant";
 import IMenu from "@component/models/IMenu";
 import IBooking from "@component/models/IBooking";
-import IMenuItem from "@component/models/IMenuItem";
 import ICartItem from "@component/models/ICartItem";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 
 const mainApi = {
@@ -72,11 +69,11 @@ const mainApi = {
     },
 
 
-    async createTempBooking(booking: IBooking) {
+    async createBooking(booking: IBooking) {
         try {
             const response = await reAxios.post(`/booking`, booking);
             console.log("response temp booking: ", response.data)
-            return response.data.data.id
+            return response.data.data.stripeUrl
         } catch (error: any) {
             throw error.response;
         }

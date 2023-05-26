@@ -5,15 +5,14 @@ import MenuCard from "@component/components/MenuCard";
 interface MenuListProps {
     menu: IMenu
     restaurantId: number
-    addToPreorder: (itemId: number, quantity: number) => void;
+    addToPreorder: (itemId: number) => void;
 }
 
 const MenuList: React.FC<MenuListProps> = ({menu, restaurantId, addToPreorder}) => {
     return (
-        <div className="d-flex justify-content-center pt-5">
+        <div className="d-flex justify-content-center pt-5 flex-column">
             <div className=" wow zoomIn">
-                <h1>Restaurants</h1>
-
+                <h1>Menu</h1>
             </div>
             <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
                 {menu?.menuItems.map(item => (

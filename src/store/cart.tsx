@@ -42,6 +42,10 @@ class Cart {
         return this.items;
     }
 
+    getRestaurantId() {
+        return this.restaurantId;
+    }
+
     private saveCartToStorage() {
         Cookies.set('cart', JSON.stringify(this));
     }

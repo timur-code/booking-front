@@ -27,11 +27,12 @@ const userApi = {
 
     async logout() {
         try {
-            await uAxios.post('/auth/logout');
+            // await uAxios.post('/auth/logout');
             // Remove the token from localStorage or another storage method
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
             Cookies.remove('me');
+            await Router.push("/");
             Router.reload();
         } catch (error: any) {
             throw error.response.data;

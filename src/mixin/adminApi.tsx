@@ -3,6 +3,7 @@ import Router from "next/router";
 import Cookies from 'js-cookie';
 import ICreateMenu from "@component/models/ICreateMenu";
 import ICreateMenuItem from "@component/models/ICreateMenuItem";
+import ICreateRestaurant from "@component/models/ICreateRestaurant";
 
 const adminApi = {
     async login(phone: string, password: string) {
@@ -121,7 +122,7 @@ const adminApi = {
         }
     },
 
-    async createRes(restaurant: ICreateMenu) {
+    async createRes(restaurant: ICreateRestaurant) {
         try {
             const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + '/restaurant', {
                 method: 'POST',
