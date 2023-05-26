@@ -52,7 +52,7 @@ const refreshToken = async (error) => {
             // Request a new access token using the refresh token
             const response = await axios.create({
                 baseURL: process.env.NEXT_PUBLIC_USER_SERVICE,
-            }).post('/api/auth/refresh', {refresh_token: refreshToken});
+            }).post('/auth/refresh', {refresh_token: refreshToken});
             const newAccessToken = response.data.access_token;
 
             // Update the token in axios instance and localStorage
