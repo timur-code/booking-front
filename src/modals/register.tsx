@@ -3,9 +3,12 @@ import {Modal, Form, Button} from 'react-bootstrap';
 
 import userApi from "@component/mixin/userApi";
 import IModalProps from './IModal';
-import {useRouter} from "next/router";
+import Router, {useRouter} from "next/router";
 
-const LoginModal: React.FC<IModalProps> = ({onClose, show}) => {
+
+const RegisterModal: React.FC<IModalProps> = ({onClose, show}) => {
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -19,33 +22,47 @@ const LoginModal: React.FC<IModalProps> = ({onClose, show}) => {
         setPassword(e.target.value);
     };
 
+    const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setFirstName(e.target.value);
+    };
+
+    const handleLastNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setLastName(e.target.value);
+    };
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError('');
 
         try {
-            const data = await userApi.login(phoneNumber, password);
-            console.log("Login success: ", data);
+            const data = await userApi.register(phoneNumber, password, firstName, lastName);
+            console.log("Register success: ", data);
             onClose();
-            await router.push("/")
-            // Redirect to the dashboard or another protected page
+            Router.reload();
         } catch (err: any) {
-            setError(err.message || 'An error occurred during login.');
+            setError(err.message || 'An error occurred during registration.');
         }
     };
 
     return (
         <Modal className="text-dark" show={show} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Вход</Modal.Title>
+                <Modal.Title>Регистрация</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit} >
+                    <Form.Group className="mb-3 ">
+                        <Form.Label>Имя</Form.Label>
+                        <Form.Control type="text" placeholder="Введите имя" onChange={handleFirstNameChange}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3 ">
+                        <Form.Label>Фамилия</Form.Label>
+                        <Form.Control type="text" placeholder="Введите фамилию" onChange={handleLastNameChange}/>
+                    </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Номер телефона</Form.Label>
-                        <Form.Control type="tel" placeholder="Введите номер телефона" onChange={handlePhoneNumberChange}/>
+                        <Form.Control type="tel" placeholder="Введите телефон" onChange={handlePhoneNumberChange}/>
                     </Form.Group>
-
                     <Form.Group className="mb-3 ">
                         <Form.Label>Пароль</Form.Label>
                         <Form.Control type="password" placeholder="Введите пароль" onChange={handlePasswordChange}/>
@@ -60,4 +77,4 @@ const LoginModal: React.FC<IModalProps> = ({onClose, show}) => {
     );
 };
 
-export default LoginModal;
+export default RegisterModal;

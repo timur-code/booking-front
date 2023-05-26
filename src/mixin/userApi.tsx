@@ -25,6 +25,18 @@ const userApi = {
         }
     },
 
+    async register(phone: string, password: string, firstName: string, lastName: string) {
+        try {
+            const response = await uAxios.post('/auth/register', {phone, password, firstName, lastName});
+            const res = response.data;
+            console.log("success: ", res);
+            return res;
+        } catch (error: any) {
+            throw error.response.data;
+        }
+    },
+
+
     async logout() {
         try {
             // await uAxios.post('/auth/logout');
