@@ -22,6 +22,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
     const [shouldCreateBooking, setShouldCreateBooking] = useState(false);
     const [booking, setBooking] = useState<IBooking>({
         id: null,
+        restaurant: null,
         restaurantId: id,
         timeStart: now(getLocalTimeZone()).toString(), // You can set an initial value if needed
         timeEnd: now(getLocalTimeZone()).toString(),

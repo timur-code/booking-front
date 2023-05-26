@@ -1,7 +1,9 @@
 import ICartItem from "@component/models/ICartItem";
 import {ZonedDateTime} from "@internationalized/date";
+import IRestaurant from "@component/models/IRestaurant";
 
 interface IBooking {
+    restaurant: IRestaurant | null;
     id: number | null,
     restaurantId: number | null,
     timeStart: string, // You can set an initial value if needed

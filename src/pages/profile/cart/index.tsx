@@ -16,6 +16,7 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
     const [showToast, setShowToast] = React.useState(false);
     const [booking, setBooking] = useState<IBooking>({
         id: null,
+        restaurant: null,
         restaurantId: cart.getRestaurantId(),
         timeStart: now(getLocalTimeZone()).toString(), // You can set an initial value if needed
         timeEnd: now(getLocalTimeZone()).toString(),
