@@ -4,6 +4,9 @@ import Cookies from 'js-cookie';
 import ICreateMenu from "@component/models/ICreateMenu";
 import ICreateMenuItem from "@component/models/ICreateMenuItem";
 import ICreateRestaurant from "@component/models/ICreateRestaurant";
+import {GetServerSidePropsContext} from "next";
+import cookie from "cookie";
+import ISupportRequest from "@component/models/ISupportRequest";
 
 const adminApi = {
     async login(phone: string, password: string) {
@@ -20,6 +23,7 @@ const adminApi = {
                 const errorData = await response.json();
                 throw new Error(JSON.stringify(errorData));
             }
+
 
             const res = await response.json();
             const token = res.data.access_token;
@@ -67,18 +71,17 @@ const adminApi = {
 
     async isAdmin(accessToken: string) {
         try {
+            console.log("Access: ", accessToken)
             const response = await fetch(process.env.NEXT_PUBLIC_USER_SERVICE + '/auth/is-admin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
                     'Authorization': `Bearer ${accessToken}`,
                 },
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                console.log(errorData)
+                console.log("response: ", response)
                 return false;
             }
 
@@ -87,16 +90,6 @@ const adminApi = {
             throw error;
         }
     },
-
-
-    // async register(userData) {
-    //   try {
-    //     const response = await uAxios.post('/auth/register', userData);
-    //     return response.data;
-    //   } catch (error) {
-    //     throw error.response.data;
-    //   }
-    // },
 
     async getCurrentUser() {
         try {
@@ -122,13 +115,61 @@ const adminApi = {
         }
     },
 
+    async getSupportRequests(context: GetServerSidePropsContext) {
+        try {
+            const cookies = cookie.parse(context.req.headers.cookie || '');
+            const accessToken = cookies.access_token;
+            const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + '/support', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            const requests :ISupportRequest[] = res.content;
+            return requests;
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
+    async resolveRequest(id:number) {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BOOKING_SERVICE}/support/${id}/resolve`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include the access token in the headers if required
+                    'Authorization': `Bearer ${Cookies.get('access_token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            const resStatus = res.status;
+            return resStatus;
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
     async createRes(restaurant: ICreateRestaurant) {
         try {
             const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + '/restaurant', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
                 body: JSON.stringify(restaurant)

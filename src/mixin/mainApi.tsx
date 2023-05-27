@@ -3,6 +3,7 @@ import IRestaurant from "@component/models/IRestaurant";
 import IMenu from "@component/models/IMenu";
 import IBooking from "@component/models/IBooking";
 import ICartItem from "@component/models/ICartItem";
+import ISupportRequest from "@component/models/ISupportRequest";
 
 
 const mainApi = {
@@ -76,6 +77,15 @@ const mainApi = {
             return response.data.data.stripeUrl
         } catch (error: any) {
             throw error.response;
+        }
+    },
+
+    async createSupportRequest(request: {phone: string, text:string}) {
+        try {
+            const response = await reAxios.post(`/support`, request);
+            return response.data
+        } catch (error: any) {
+            throw error;
         }
     },
 

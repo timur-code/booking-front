@@ -1,47 +1,32 @@
 import React from 'react';
 import {GetServerSideProps} from 'next';
+import checkAdmin from "@component/utils/checkAdmin";
+import ISupportRequest from "@component/models/ISupportRequest";
 import adminApi from "@component/mixin/adminApi";
-import cookie from 'cookie';
-import dynamic from 'next/dynamic';
+import SupportRequestCard from "@component/components/SupportRequestCard";
 
 interface AdminPageProps {
-    showModal: boolean;
+    requests: ISupportRequest[]
 }
 
-const AdminPage: React.FC<AdminPageProps> = ({showModal}) => {
-    const DynamicAdminLoginModal = dynamic(
-        () => import('@component/modals/adminLogin'),
-        { ssr: false }
-    );
-
+const AdminPage: React.FC<AdminPageProps> = ({requests}) => {
     return (
-        <div>
+        <div className="w-75 m-auto">
             <p className="h1">Admin</p>
-            {showModal && <DynamicAdminLoginModal show={true} onClose={() => {}} />}
+            <div className={"d-flex flex-row flex-wrap gap-3"}>
+                {requests && requests.map((item) => (
+                    <SupportRequestCard key={item.id} request={item}/>
+                ))}
+            </div>
         </div>
     );
 };
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let showModal = true;
-
-    // Parse cookies from the request headers
-    const cookies = cookie.parse(context.req.headers.cookie || '');
-
-    try {
-        const isAdmin = await adminApi.isAdmin(cookies.access_token);
-        console.log("isAdmin ",isAdmin)
-        if (isAdmin) {
-            showModal = false;
-        }
-    } catch (error) {
-        console.error('Error checking admin status:', error);
-    }
-
-    return {
-        props: { showModal },
-    };
+    await checkAdmin(context)
+    let requests: ISupportRequest[] = await adminApi.getSupportRequests(context)
+    return {props: {requests}};
 }
 
 export default AdminPage;
