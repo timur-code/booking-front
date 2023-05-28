@@ -6,8 +6,12 @@ import {useRouter} from "next/router";
 import cookie from "cookie";
 
 const AdminRestaurantIndex = () => {
+    //TODO: добавить добавление картинок
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [seats, setSeats] = useState<number>(1);
+    const [adminPhone, setAdminPhone] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
     const router = useRouter();
 
@@ -18,6 +22,36 @@ const AdminRestaurantIndex = () => {
     const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
         setDescription(e.target.value);
     };
+
+    const handleSeatsChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSeats(e.target.valueAsNumber);
+    };
+
+    const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setAdminPhone(e.target.value);
+    };
+
+    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
+
+    const checkLength = () => {
+        if (name.length === 0) {
+            throw new Error('Введите название')
+        }
+        if (description.length < 10) {
+            throw new Error('Введите описание')
+        }
+        if (!seats) {
+            throw new Error('Укажите количество мест')
+        }
+        if (adminPhone.length !== 12) {
+            throw new Error('Минимальная длинна телефона 12')
+        }
+        if (password.length < 6) {
+            throw new Error('Минимальная длинна пароля 6')
+        }
+    }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -44,12 +78,23 @@ const AdminRestaurantIndex = () => {
                         <div className="h1">Добавление ресторана</div>
                         <Form.Group className="mb-3">
                             <Form.Label>Название</Form.Label>
-                            <Form.Control type="text" placeholder="" onChange={handleNameChange}/>
+                            <Form.Control type="text" placeholder="Введите название" onChange={handleNameChange}/>
                         </Form.Group>
-
                         <Form.Group className="mb-3">
                             <Form.Label>Описание</Form.Label>
-                            <Form.Control type="text" placeholder="Введите пароль" onChange={handleDescriptionChange}/>
+                            <Form.Control type="text" placeholder="Введите описание" onChange={handleDescriptionChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Количество мест</Form.Label>
+                            <Form.Control type="number" min={1} placeholder="Введите число" onChange={handleSeatsChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Номер телефона администратора ресторана</Form.Label>
+                            <Form.Control minLength={12} maxLength={12} type="text" placeholder="Введите номер телефона" onChange={handlePhoneChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Пароль</Form.Label>
+                            <Form.Control minLength={6} maxLength={20} type="password" placeholder="Введите пароль" onChange={handlePasswordChange}/>
                         </Form.Group>
                         <Button variant="primary" type="submit">
                             Добавить

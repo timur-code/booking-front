@@ -96,7 +96,13 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
             setShowToast(true);
             return;
         }
-        mainApi.createBooking(booking).then(r => console.log(r));
+        mainApi.createBooking(booking).then(res => {
+            if (res.length > 0) {
+                setToastVariant('success')
+                setToastMessage('Вы успешно забронировали кафе без предзаказа!')
+                setShowToast(true)
+            }
+        });
     }
 
     useEffect(() => {
