@@ -1,19 +1,18 @@
-import IBooking from "@component/models/IBooking";
 import IRestaurant from "@component/models/IRestaurant";
-import React from "react";
+import React, {useState} from "react";
+import IUser from "@component/models/IUser";
+import {Button} from "react-bootstrap";
+import adminApi from "@component/mixin/adminApi";
+import Cookies from "js-cookie";
 
-interface BookingsPageProps {
-    bookings: Array<IBooking & { restaurant: IRestaurant | undefined }>;
-}
-
-// Adjust the BookingCard component
 interface BookingCardProps {
     booking: any;
     restaurant: IRestaurant | undefined;
+    user: IUser;
 }
 
-const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant}) => {
-    // handle the case where the restaurant was not found
+const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant, user}) => {
+    const [canceled, setCanceled] = useState(booking.canceled);
 
     let totalPrice = 0;
     if (booking.bookingItems != null && booking.bookingItems.length !== 0) {
@@ -22,14 +21,11 @@ const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant}) => {
         totalPrice = booking.bookingItems.reduce((total, item) => total + (item.menuItem.price * item.quantity), 0);
     }
 
-    const cardStyle = {
-        backgroundImage: 'url(/item.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    };
-
-    if (restaurant) {
-        cardStyle.backgroundImage = restaurant.img ? `url(${restaurant.img})` : 'url(/item.jpg)'
+    const handleCancel = async () => {
+        const res = await adminApi.cancelBookingAdmin(Cookies.get("access_token") || '', booking.id);
+        if (res) {
+            setCanceled(true);
+        }
     }
 
     function formatDateTime(dateTimeString: string): string {
@@ -45,22 +41,19 @@ const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant}) => {
         return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
 
-
     return (
-        <div>
-            <div className="border-card">
-                <div className="wrap-card">
-                    <div
-                        className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded text-decoration-none"
-                        style={cardStyle}
-                    >
-                    </div>
-                    {restaurant && (<h3>{restaurant.name}</h3>)}
-                    <p>Время брони: {formatDateTime(booking.startTime)} - {formatDateTime(booking.endTime)}</p>
-                    <p>Сумма заказа: {totalPrice}</p>
-                </div>
-            </div>
-        </div>
+        <tr>
+            <td>{booking.id}</td>
+            <td>{restaurant ? restaurant?.name : ''}</td>
+            <td>{formatDateTime(booking.startTime)}</td>
+            <td>{formatDateTime(booking.endTime)}</td>
+            <td>{totalPrice > 0 ? 'Да' : 'Нет'}</td>
+            <td>{totalPrice}</td>
+            <td>{user.lastName + ' ' + user.firstName}</td>
+            <td>{user.phone}</td>
+            <td>{canceled ? (<p className={"text-danger"}>Заказ отменен</p>) : (
+                <Button type={"button"} onClick={handleCancel}>Отменить</Button>)}</td>
+        </tr>
     );
 };
 

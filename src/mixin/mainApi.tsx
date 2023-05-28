@@ -89,17 +89,16 @@ const mainApi = {
         }
     },
 
-    async confirmBooking(id: number | null) {
-        if (!id) {
-            return
-        }
-        try {
-            const response = await reAxios.post(`/booking/${id}/confirm`);
-            console.log("response confirm booking: ", response.data)
-        } catch (error: any) {
-            throw error.response.data;
-        }
-    }
+    async cancelBooking(accessToken: string, id: number) {
+        const res = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + `/booking/${id}/cancel`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+        });
+        return res.ok;
+    },
 };
 
 export default mainApi;

@@ -20,9 +20,12 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
     const [restaurant, setRestaurant] = useState<IRestaurant>();
     const [menu, setMenu] = useState<IMenu>();
     const [shouldCreateBooking, setShouldCreateBooking] = useState(false);
+    const [toastMessage, setToastMessage] = React.useState('');
+    const [toastVariant, setToastVariant] = React.useState('success');
     const [booking, setBooking] = useState<IBooking>({
         id: null,
         restaurant: null,
+        userId: '',
         restaurantId: id,
         timeStart: now(getLocalTimeZone()).toString(), // You can set an initial value if needed
         timeEnd: now(getLocalTimeZone()).toString(),
@@ -37,6 +40,8 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         if (restaurant) {
             cart.addToCart(restaurant.id, id)
         }
+        setToastVariant('success')
+        setToastMessage('Предмет добавлен в корзину!')
         setShowToast(true)
         console.log("cart: ", cart)
     };
@@ -82,6 +87,15 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                 timeEnd: prevState.timeEnd
             }
         });
+        const dateStart = booking.timeStart.split('T')[0];
+        const dateEnd = booking.timeEnd.split('T')[0];
+
+        if (dateStart !== dateEnd || booking.timeStart >= booking.timeEnd) {
+            setToastVariant("danger")
+            setToastMessage('Укажите корректное время!')
+            setShowToast(true);
+            return;
+        }
         mainApi.createBooking(booking).then(r => console.log(r));
     }
 
@@ -147,8 +161,9 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
             <Toast
                 onClose={() => setShowToast(false)}
                 show={showToast}
-                delay={3000}
+                delay={2000}
                 autohide
+                bg={toastVariant}
                 style={{
                     position: 'fixed',
                     bottom: 20,
@@ -157,9 +172,9 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                 }}
             >
                 <Toast.Header>
-                    <strong className="mr-auto">Cart Notification</strong>
+                    <strong className="mr-auto">Уведомление</strong>
                 </Toast.Header>
-                <Toast.Body className="text-black">Item added to cart!</Toast.Body>
+                <Toast.Body className="text-black">{toastMessage}</Toast.Body>
             </Toast>
         </section>
     );

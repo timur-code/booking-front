@@ -5,7 +5,7 @@ import IMenuItem from "@component/models/IMenuItem";
 import {GetServerSideProps} from "next";
 import cookie from "cookie";
 import cart from "@component/store/cart";
-import { Toast } from 'react-bootstrap';
+import {Toast} from 'react-bootstrap';
 import IBooking from "@component/models/IBooking";
 import {getLocalTimeZone, now} from "@internationalized/date";
 import TimePicker from "@component/input/timepicker";
@@ -14,9 +14,11 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
 
     const [cartItems, setCartItems] = React.useState(initialCartItems);
     const [showToast, setShowToast] = React.useState(false);
+    const [toastMessage, setToastMessage] = React.useState('');
     const [booking, setBooking] = useState<IBooking>({
         id: null,
         restaurant: null,
+        userId: '',
         restaurantId: cart.getRestaurantId(),
         timeStart: now(getLocalTimeZone()).toString(), // You can set an initial value if needed
         timeEnd: now(getLocalTimeZone()).toString(),
@@ -31,6 +33,7 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
     const handleRemove = (id: number) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== id));
         cart.removeFromCart(id)
+        setToastMessage('Предмет убран из корзины!')
         setShowToast(true);
     };
 
@@ -42,6 +45,15 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
                 timeEnd: prevState.timeEnd
             }
         });
+
+        const dateStart = booking.timeStart.split('T')[0];
+        const dateEnd = booking.timeEnd.split('T')[0];
+
+        if (dateStart !== dateEnd || booking.timeStart >= booking.timeEnd) {
+            setToastMessage('Укажите корректное время!')
+            setShowToast(true);
+            return;
+        }
         mainApi.createBooking(booking).then(r => {
             window.location.href = r
         });
@@ -66,11 +78,10 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
     };
 
 
-
     return (
         <div>
             <div className="cart-name wow zoomIn">
-                <h1>Cart</h1>
+                <h1>Корзина</h1>
             </div>
             <div className="d-flex justify-content-center pt-5">
                 <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
@@ -84,30 +95,33 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
                             />
                         ))
                     ) : (
-                        <p>No items in cart</p>
+                        <p>Добавьте предметы в корзину, зайдя на страницы ресторанов</p>
                     )}
                 </div>
             </div>
-            <div>
-                <TimePicker
-                    label="Выберете время начала брони"
-                    time={booking.timeStart}
-                    onTimeChange={(date, time) => handleTimeChange(date, time)}
-                />
-                <TimePicker
-                    label="Выберете время окончания брони"
-                    time={booking.timeEnd}
-                    onTimeChange={(date, time) => handleTimeEndChange(date, time)}
-                />
-                <div className="m-auto w-25 d-flex justify-content-center">
-                    <button className="cafe-button" type='submit' onClick={handleBooking}>Бронировать</button>
+            {cartItems.length > 0 && (
+                <div>
+                    <TimePicker
+                        label="Выберете время начала брони"
+                        time={booking.timeStart}
+                        onTimeChange={(date, time) => handleTimeChange(date, time)}
+                    />
+                    <TimePicker
+                        label="Выберете время окончания брони"
+                        time={booking.timeEnd}
+                        onTimeChange={(date, time) => handleTimeEndChange(date, time)}
+                    />
+                    <div className="m-auto w-25 d-flex justify-content-center">
+                        <button className="cafe-button" type='submit' onClick={handleBooking}>Бронировать</button>
+                    </div>
                 </div>
-            </div>
+            )}
             <Toast
                 onClose={() => setShowToast(false)}
                 show={showToast}
-                delay={1000}
+                delay={2000}
                 autohide
+                bg={'danger'}
                 style={{
                     position: 'fixed',
                     bottom: 20,
@@ -116,9 +130,9 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
                 }}
             >
                 <Toast.Header>
-                    <strong className="mr-auto">Cart Notification</strong>
+                    <strong className="mr-auto">Уведомление</strong>
                 </Toast.Header>
-                <Toast.Body className="text-black">Item removed from cart!</Toast.Body>
+                <Toast.Body className="text-black">{toastMessage}</Toast.Body>
             </Toast>
         </div>
     );

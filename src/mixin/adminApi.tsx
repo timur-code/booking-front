@@ -181,16 +181,28 @@ const adminApi = {
         return restaurants
     },
 
-    async getUserById(context: GetServerSidePropsContext, id: string) {
+    async cancelBookingAdmin(accessToken: string, id: number) {
+        const res = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + `/booking/${id}/cancel/admin`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+        });
+        return res.ok;
+    },
+
+    async getUsersById(context: GetServerSidePropsContext, id: string[]) {
         try {
             const cookies = cookie.parse(context.req.headers.cookie || '');
             const accessToken = cookies.access_token;
-            const response = await fetch(process.env.NEXT_PUBLIC_USER_SERVICE + `/auth/${id}/info`, {
-                method: 'GET',
+            const response = await fetch(process.env.NEXT_PUBLIC_USER_SERVICE + `/auth/info`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
                 },
+                body: JSON.stringify({ idList: id }),
             });
 
             if (!response.ok) {
@@ -198,7 +210,7 @@ const adminApi = {
                 throw new Error(JSON.stringify(errorData));
             }
 
-            const user: IUser = await response.json();
+            const user: IUser[] = await response.json();
             return user;
         } catch (error: any) {
             throw error;
