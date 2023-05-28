@@ -58,6 +58,16 @@ const AdminRestaurantIndex = () => {
         setError('');
 
         try {
+            checkLength()
+        } catch (ex) {
+            if (ex instanceof Error) {
+                setError(ex.message);
+            } else {
+                setError('An unexpected error occurred.');
+            }
+            return;
+        }
+        try {
             const data = await adminApi.createRes({
                 name,
                 description
