@@ -7,6 +7,8 @@ import ICreateRestaurant from "@component/models/ICreateRestaurant";
 import {GetServerSidePropsContext} from "next";
 import cookie from "cookie";
 import ISupportRequest from "@component/models/ISupportRequest";
+import IBooking from "@component/models/IBooking";
+import IRestaurant from "@component/models/IRestaurant";
 
 const adminApi = {
     async login(phone: string, password: string) {
@@ -133,14 +135,77 @@ const adminApi = {
             }
 
             const res = await response.json();
-            const requests :ISupportRequest[] = res.content;
+            const requests: ISupportRequest[] = res.content;
             return requests;
         } catch (error: any) {
             throw error;
         }
     },
 
-    async resolveRequest(id:number) {
+    async getAllBookings(context: GetServerSidePropsContext) {
+        try {
+            const cookies = cookie.parse(context.req.headers.cookie || '');
+            const accessToken = cookies.access_token;
+            const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + '/booking/all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            const requests: IBooking[] = res.content;
+            return requests;
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
+    async getRestaurantsByIds(context: GetServerSidePropsContext, restaurantIds: number[]) {
+        const restaurantRes = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + '/restaurant/list-by-id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // add authentication headers here if necessary
+            },
+            body: JSON.stringify({ idList: restaurantIds }),
+        });
+        const restaurantResponse = await restaurantRes.json();
+        const restaurants: IRestaurant[] = restaurantResponse.data;
+        return restaurants
+    },
+
+    async getUserById(context: GetServerSidePropsContext, id: string) {
+        try {
+            const cookies = cookie.parse(context.req.headers.cookie || '');
+            const accessToken = cookies.access_token;
+            const response = await fetch(process.env.NEXT_PUBLIC_USER_SERVICE + `/auth/${id}/info`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const user: IUser = await response.json();
+            return user;
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
+    async resolveRequest(id: number) {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BOOKING_SERVICE}/support/${id}/resolve`, {
                 method: 'POST',

@@ -1,8 +1,6 @@
-// Adjust the type definition
 import IBooking from "@component/models/IBooking";
 import IRestaurant from "@component/models/IRestaurant";
 import React from "react";
-import Link from "next/link";
 
 interface BookingsPageProps {
     bookings: Array<IBooking & { restaurant: IRestaurant | undefined }>;
