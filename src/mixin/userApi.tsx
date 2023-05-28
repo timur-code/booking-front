@@ -32,7 +32,7 @@ const userApi = {
             console.log("success: ", res);
             return res;
         } catch (error: any) {
-            throw error.response.data;
+            throw error;
         }
     },
 
