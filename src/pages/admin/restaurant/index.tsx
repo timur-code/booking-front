@@ -42,7 +42,7 @@ const AdminRestaurantIndex = () => {
         if (description.length < 10) {
             throw new Error('Введите описание')
         }
-        if (!seats) {
+        if (seats == null || seats < 1) {
             throw new Error('Укажите количество мест')
         }
         if (adminPhone.length !== 12) {
