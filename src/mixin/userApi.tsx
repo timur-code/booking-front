@@ -25,6 +25,32 @@ const userApi = {
         }
     },
 
+    async changeUser(user: IUser) {
+        try {
+            const response = await fetch(process.env.NEXT_PUBLIC_USER_SERVICE + '/auth/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include the access token in the headers if required
+                    'Authorization': `Bearer ${Cookies.get('access_token')}`,
+                },
+                body: JSON.stringify(user)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            Cookies.remove('me');
+            const newUser: IUser = await this.getCurrentUser();
+            Cookies.set('me', JSON.stringify(newUser));
+            Router.reload();
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
     async register(phone: string, password: string, firstName: string, lastName: string) {
         try {
             const response = await uAxios.post('/auth/register', {phone, password, firstName, lastName});
