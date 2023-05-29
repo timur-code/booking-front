@@ -63,7 +63,7 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
         setBooking((prevState) => {
             return {
                 ...prevState,
-                timeStart: `${date}T${time}:00Z`,
+                timeStart: `${date}T${time}${prevState.timeStart.slice(16)}`,
             };
         });
     };
@@ -72,7 +72,7 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
         setBooking((prevState) => {
             return {
                 ...prevState,
-                timeEnd: `${date}T${time}:00Z`,
+                timeEnd: `${date}T${time}${prevState.timeEnd.slice(16)}`,
             };
         });
     };

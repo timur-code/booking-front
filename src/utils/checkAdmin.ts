@@ -8,12 +8,15 @@ const checkAdmin = async (context: GetServerSidePropsContext) => {
         const cookies = cookie.parse(context.req.headers.cookie || '');
         const res = await adminApi.isAdmin(cookies.access_token);
 
-
         if (res) {
             return {props: {}};
         }
     } catch (error) {
         console.log(error);
+        if (context.res) {
+            context.res.writeHead(302, {Location: '/admin/login'});
+            context.res.end();
+        }
     }
 
     console.log("NOT ADMIN")

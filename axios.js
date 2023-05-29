@@ -20,7 +20,7 @@ reAxios.interceptors.response.use(undefined, async (error) => {
     //TODO: поменять чтобы отрабатывал на 401 только
     console.log(`AXIOS ERROR: ${error}`)
     // Check if there is a refresh token available
-    await refreshToken(error);
+    // await refreshToken(error);
 });
 
 const uAxios = axios.create({
@@ -56,30 +56,26 @@ const refreshToken = async (error) => {
                 baseURL: process.env.NEXT_PUBLIC_USER_SERVICE,
             }).post('/auth/refresh', {refreshToken: refreshToken});
             const newAccessToken = response.data.access_token;
+            const newRefreshToken = response.data.refresh_token;
 
-            // Update the token in axios instance and localStorage
+            Cookies.remove('access_token');
             Cookies.set('access_token', newAccessToken);
             console.log("ACCESS TOKEN ", newAccessToken)
 
-            // Update the token in the Axios instance
-            uAxios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
-            reAxios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
-
-            // Retry the original request with the new token
-            const originalRequest = error.config;
-            originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-            return error.config.baseURL === process.env.NEXT_PUBLIC_BOOKING_SERVICE
-                ? reAxios.request(originalRequest)
-                : uAxios.request(originalRequest);
+            Cookies.remove('refresh_token');
+            Cookies.set('refresh_token', newRefreshToken);
+            console.log("ACCESS TOKEN ", newRefreshToken)
         } catch (refreshError) {
             // If the refresh token is also invalid, ask the user to log in again
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
+            Cookies.remove('me');
             // Redirect the user to the login page or show a login modal
         }
     } else {
         // If there's no refresh token, ask the user to log in again
         Cookies.remove('access_token');
+        Cookies.remove('me');
         // Redirect the user to the login page or show a login modal
     }
 }

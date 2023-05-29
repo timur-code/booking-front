@@ -93,6 +93,29 @@ const adminApi = {
         }
     },
 
+    async getMyRes(context: GetServerSidePropsContext) {
+        try {
+            const cookies = cookie.parse(context.req.headers.cookie || '');
+            const accessToken = cookies.access_token;
+            const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + `/restaurant/my-restaurant`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                }
+            });
+
+            if (!response.ok) {
+                console.log("response: ", response)
+                throw new Error();
+            }
+
+            return await response.json();
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
     async getCurrentUser() {
         try {
             const response = await fetch(process.env.NEXT_PUBLIC_USER_SERVICE + '/auth/me', {
@@ -147,6 +170,31 @@ const adminApi = {
             const cookies = cookie.parse(context.req.headers.cookie || '');
             const accessToken = cookies.access_token;
             const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + '/booking/all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            const requests: IBooking[] = res.content;
+            return requests;
+        } catch (error: any) {
+            throw error;
+        }
+    },
+
+    async getAllBookingsByRes(restaurantId: string, context: GetServerSidePropsContext) {
+        try {
+            const cookies = cookie.parse(context.req.headers.cookie || '');
+            const accessToken = cookies.access_token;
+            const response = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + `/booking/by-restaurant?restaurantId=${restaurantId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

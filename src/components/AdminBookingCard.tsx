@@ -31,7 +31,7 @@ const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant}) => {
     };
 
     if (restaurant) {
-        cardStyle.backgroundImage = restaurant.img ? `url(${restaurant.img})` : 'url(/item.jpg)'
+        cardStyle.backgroundImage = restaurant.image ? `url(${restaurant.image})` : 'url(/item.jpg)'
     }
 
     function formatDateTime(dateTimeString: string): string {
