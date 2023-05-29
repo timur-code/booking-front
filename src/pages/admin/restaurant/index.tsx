@@ -6,12 +6,12 @@ import {useRouter} from "next/router";
 import cookie from "cookie";
 
 const AdminRestaurantIndex = () => {
-    //TODO: добавить добавление картинок
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [seats, setSeats] = useState<number>(1);
     const [adminPhone, setAdminPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [image, setImage] = useState<string>('');
     const [error, setError] = useState<string>('');
     const router = useRouter();
 
@@ -33,6 +33,10 @@ const AdminRestaurantIndex = () => {
 
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
+    };
+
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setImage(e.target.value);
     };
 
     const checkLength = () => {
@@ -70,7 +74,11 @@ const AdminRestaurantIndex = () => {
         try {
             const data = await adminApi.createRes({
                 name,
-                description
+                description,
+                seats,
+                adminPhone,
+                password,
+                image
             });
             console.log("RESTAURANT success: ", data);
             await router.push("/admin/restaurant")
@@ -97,6 +105,10 @@ const AdminRestaurantIndex = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Количество мест</Form.Label>
                             <Form.Control type="number" min={1} placeholder="Введите число" onChange={handleSeatsChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Картинка</Form.Label>
+                            <Form.Control type="text" placeholder="Введите ссылку" onChange={handleImageChange}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Номер телефона администратора ресторана</Form.Label>
