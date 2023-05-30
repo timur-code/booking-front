@@ -17,10 +17,10 @@ reAxios.interceptors.request.use(
 );
 
 reAxios.interceptors.response.use(undefined, async (error) => {
-    //TODO: поменять чтобы отрабатывал на 401 только
+
     console.log(`AXIOS ERROR: ${error}`)
-    // Check if there is a refresh token available
-    // await refreshToken(error);
+
+
 });
 
 const uAxios = axios.create({
@@ -39,9 +39,9 @@ uAxios.interceptors.request.use(
 );
 
 uAxios.interceptors.response.use(undefined, async error => {
-    //TODO: поменять чтобы отрабатывал на 401 только
+
     console.log(`AXIOS ERROR: ${error}`)
-    // Check if there is a refresh token available
+
     if (!error.contains("500")) {
         await refreshToken(error);
     }
@@ -51,7 +51,7 @@ const refreshToken = async (error) => {
     const refreshToken = Cookies.get('refresh_token');
     if (refreshToken) {
         try {
-            // Request a new access token using the refresh token
+
             const response = await axios.create({
                 baseURL: process.env.NEXT_PUBLIC_USER_SERVICE,
             }).post('/auth/refresh', {refreshToken: refreshToken});
@@ -66,17 +66,17 @@ const refreshToken = async (error) => {
             Cookies.set('refresh_token', newRefreshToken);
             console.log("ACCESS TOKEN ", newRefreshToken)
         } catch (refreshError) {
-            // If the refresh token is also invalid, ask the user to log in again
+
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
             Cookies.remove('me');
-            // Redirect the user to the login page or show a login modal
+
         }
     } else {
-        // If there's no refresh token, ask the user to log in again
+
         Cookies.remove('access_token');
         Cookies.remove('me');
-        // Redirect the user to the login page or show a login modal
+
     }
 }
 

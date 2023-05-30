@@ -59,7 +59,7 @@ const NavBar = () => {
         try {
             const data = await userApi.logout();
             console.log("Login success: ", data);
-            // Redirect to the dashboard or another protected page
+
         } catch (err: any) {
             console.error(err.message || 'An error occurred during logout.');
         }

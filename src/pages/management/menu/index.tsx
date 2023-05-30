@@ -51,7 +51,7 @@ const ManagementMenuPage: React.FC<ManagementMenuProps> = ({restaurant}) => {
             });
             console.log("Menu ITEM success: ", data);
             await router.push("/management/menu")
-            // Redirect to the dashboard or another protected page
+
         } catch (err: any) {
             setError(err.message || 'An error occurred during login.');
         }

@@ -6,8 +6,8 @@ interface IBooking {
     id: number | null,
     userId: string,
     restaurantId: number | null,
-    timeStart: string, // You can set an initial value if needed
-    timeEnd: string, // You can set an initial value if needed
+    timeStart: string,
+    timeEnd: string,
     guests:number,
     stripeSessionId: string | null,
     stripeUrl: string | null,

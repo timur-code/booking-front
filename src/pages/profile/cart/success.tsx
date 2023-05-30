@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Include the access token in the headers if required
+
                 'Authorization': `Bearer ${cookies.access_token}`,
             }
         });

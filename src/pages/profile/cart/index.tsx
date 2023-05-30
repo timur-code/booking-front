@@ -20,7 +20,7 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
         restaurant: null,
         userId: '',
         restaurantId: cart.getRestaurantId(),
-        timeStart: now(getLocalTimeZone()).toString(), // You can set an initial value if needed
+        timeStart: now(getLocalTimeZone()).toString(),
         timeEnd: now(getLocalTimeZone()).toString(),
         guests: 1,
         preorder: cart.getCartItems(),

@@ -27,7 +27,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         restaurant: null,
         userId: '',
         restaurantId: id,
-        timeStart: now(getLocalTimeZone()).toString(), // You can set an initial value if needed
+        timeStart: now(getLocalTimeZone()).toString(),
         timeEnd: now(getLocalTimeZone()).toString(),
         guests: 1,
         stripeSessionId: null,
@@ -121,9 +121,9 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
             }
         };
 
-        //TODO: Called twice idk why
+
         fetchRestaurant().then(res => setRestaurant(res));
-        //TODO: Called twice idk why
+
         fetchMenu().then(res => setMenu(res));
 
     }, []);

@@ -46,7 +46,7 @@ const AdminLoginPage = () => {
             const data = await adminApi.login(phone, password);
             console.log("Login success: ", data);
             await Router.push("/admin")
-            // Redirect to the dashboard or another protected page
+
         } catch (err: any) {
             setError(err.message || 'An error occurred during login.');
         }

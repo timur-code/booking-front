@@ -47,7 +47,7 @@ const mainApi = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // Include the access token in the headers if required
+
                 'Authorization': `Bearer ${accessToken}`,
             },
         });

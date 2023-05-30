@@ -7,7 +7,7 @@ interface CartItemProps {
     item: IMenuItem;
     quantity: number | undefined;
     onRemove: () => void;
-    // onUpdate: (quantity: number) => void;
+
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, quantity, onRemove }) => {

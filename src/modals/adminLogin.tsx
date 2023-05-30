@@ -28,7 +28,7 @@ const AdminLoginModal: React.FC<IModalProps> = ({onClose, show}) => {
             console.log("Login success: ", data);
             onClose();
             await router.push("/")
-            // Redirect to the dashboard or another protected page
+
         } catch (err: any) {
             setError(err.message || 'An error occurred during login.');
         }

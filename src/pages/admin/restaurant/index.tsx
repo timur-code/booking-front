@@ -82,7 +82,7 @@ const AdminRestaurantIndex = () => {
             });
             console.log("RESTAURANT success: ", data);
             await router.push("/admin/restaurant")
-            // Redirect to the dashboard or another protected page
+
         } catch (err: any) {
             setError(err.message || 'An error occurred during login.');
         }
@@ -132,7 +132,7 @@ const AdminRestaurantIndex = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let showModal = true;
 
-    // Parse cookies from the request headers
+
     const cookies = cookie.parse(context.req.headers.cookie || '');
 
     try {

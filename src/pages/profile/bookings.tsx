@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps<BookingsPageProps> = async (
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // add authentication headers here if necessary
+
         },
         body: JSON.stringify({ idList: restaurantIds }),
     });

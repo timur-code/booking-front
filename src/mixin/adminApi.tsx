@@ -31,7 +31,7 @@ const adminApi = {
             const token = res.data.access_token;
             const refreshToken = res.data.refresh_token;
 
-            // Save the token in a cookie instead of localStorage
+
             Cookies.set('access_token', token);
             Cookies.set('refresh_token', refreshToken);
 
@@ -50,7 +50,7 @@ const adminApi = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
+
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
             });
@@ -60,7 +60,7 @@ const adminApi = {
                 throw new Error(JSON.stringify(errorData));
             }
 
-            // Remove the token from the cookie
+
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
             Cookies.remove('me');
@@ -122,7 +122,7 @@ const adminApi = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
+
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
             });
@@ -220,7 +220,7 @@ const adminApi = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // add authentication headers here if necessary
+
             },
             body: JSON.stringify({ idList: restaurantIds }),
         });
@@ -271,7 +271,7 @@ const adminApi = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
+
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
             });
@@ -315,7 +315,7 @@ const adminApi = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
+
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
                 body: JSON.stringify(menu)
@@ -336,7 +336,7 @@ const adminApi = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
+
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
                 body: JSON.stringify(item)

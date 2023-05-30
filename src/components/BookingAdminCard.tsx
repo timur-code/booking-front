@@ -32,7 +32,7 @@ const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant, user}) =>
         const date = new Date(dateTimeString);
 
         const year = date.getUTCFullYear();
-        const month = String(date.getUTCMonth() + 1).padStart(2, '0');  // Months are 0-11, so add 1 and pad to 2 digits
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const day = String(date.getUTCDate()).padStart(2, '0');
 
         const hours = String(date.getUTCHours()).padStart(2, '0');

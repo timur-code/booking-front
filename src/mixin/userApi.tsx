@@ -13,7 +13,7 @@ const userApi = {
             const token = res.data.access_token;
             const refreshToken = res.data.refresh_token;
 
-            // Save the token in localStorage or use another storage method
+
             Cookies.set('access_token', token);
             Cookies.set('refresh_token', refreshToken);
 
@@ -31,7 +31,7 @@ const userApi = {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include the access token in the headers if required
+
                     'Authorization': `Bearer ${Cookies.get('access_token')}`,
                 },
                 body: JSON.stringify(user)
@@ -65,8 +65,8 @@ const userApi = {
 
     async logout() {
         try {
-            // await uAxios.post('/auth/logout');
-            // Remove the token from localStorage or another storage method
+
+
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
             Cookies.remove('me');
@@ -77,14 +77,14 @@ const userApi = {
         }
     },
 
-    // async register(userData) {
-    //   try {
-    //     const response = await uAxios.post('/auth/register', userData);
-    //     return response.data;
-    //   } catch (error) {
-    //     throw error.response.data;
-    //   }
-    // },
+
+
+
+
+
+
+
+
 
     async getCurrentUser() {
         try {
