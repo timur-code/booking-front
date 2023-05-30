@@ -39,7 +39,10 @@ const SupportRequestCard: React.FC<SupportRequestCardProps> = ({request}) => {
                     <p>Текст обращения: {request.text}</p>
                     <p>Номер телефона: {request.phone}</p>
                     <p>Статус: {isResolved ? "Решено" : "В обработке"}</p>
-                    <button className={"btn btn-outline-info"} onClick={() => handleClick(request.id)}>Решено</button>
+                    {!isResolved ?
+                        (<button className={"btn btn-outline-info"} onClick={() => handleClick(request.id)}>Решено</button>)
+                        : ("")
+                    }
                 </div>
             </div>
         </div>

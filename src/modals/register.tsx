@@ -70,7 +70,7 @@ const RegisterModal: React.FC<IModalProps> = ({onClose, show}) => {
     };
 
     return (
-        <Modal className="text-dark" show={show} onHide={onClose}>
+        <Modal className="text-dark" centered={true} show={show} onHide={onClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Регистрация</Modal.Title>
             </Modal.Header>

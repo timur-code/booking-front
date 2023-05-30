@@ -8,9 +8,6 @@ import adminApi from "@component/mixin/adminApi";
 import Cookies from "js-cookie";
 import mainApi from "@component/mixin/mainApi";
 
-interface BookingsPageProps {
-    bookings: Array<IBooking & { restaurant: IRestaurant | undefined }>;
-}
 
 // Adjust the BookingCard component
 interface BookingCardProps {
@@ -72,8 +69,9 @@ const BookingCard: React.FC<BookingCardProps> = ({booking, restaurant}) => {
                     {restaurant && (<h3>{restaurant.name}</h3>)}
                     <p>Время брони: {formatDateTime(booking.startTime)} - {formatDateTime(booking.endTime)}</p>
                     <p>Сумма заказа: {totalPrice}</p>
+                    <p>Оплачено: {booking.payed || totalPrice === 0 ? "Да" : "Нет"}</p>
                     <div>{canceled ? (<p className={"text-danger"}>Заказ отменен</p>) : (
-                        <Button type={"button"} onClick={handleCancel}>Отменить</Button>)}</div>
+                        <button type={"button"} className={"btn btn-outline-danger"} onClick={handleCancel}>Отменить</button>)}</div>
                 </div>
             </div>
         </div>
