@@ -23,20 +23,17 @@ const SuccessPage: React.FC<SuccessPageProps> = ({ bookingId, isBookingSuccessfu
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { bookingId } = context.query;
-    const cookies = cookie.parse(context.req.headers.cookie || '');
+    const { bookingId, userId } = context.query;
 
     let isBookingSuccessful = false;
-    console.log(`COOKIE ${cookies.access_token}`)
 
     try {
         const res = await fetch(process.env.NEXT_PUBLIC_BOOKING_SERVICE + `/booking/${bookingId}/confirm`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-
-                'Authorization': `Bearer ${cookies.access_token}`,
-            }
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({userId})
         });
 
         console.log("RESULT: ", res);
