@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import CartItem from '@component/components/CartItem';
 import mainApi from "@component/mixin/mainApi";
 import IMenuItem from "@component/models/IMenuItem";
 import {GetServerSideProps} from "next";
 import cookie from "cookie";
 import cart from "@component/store/cart";
-import {Toast} from 'react-bootstrap';
+import {Form, Toast} from 'react-bootstrap';
 import IBooking from "@component/models/IBooking";
 import {getLocalTimeZone, now} from "@internationalized/date";
 import TimePicker from "@component/input/timepicker";
+import IRestaurant from "@component/models/IRestaurant";
 
 const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCartItems}) => {
-
-    const [cartItems, setCartItems] = React.useState(initialCartItems);
-    const [showToast, setShowToast] = React.useState(false);
-    const [toastMessage, setToastMessage] = React.useState('');
+    const [cartItems, setCartItems] = useState(initialCartItems);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const [booking, setBooking] = useState<IBooking>({
         id: null,
         restaurant: null,
@@ -27,8 +27,31 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
         stripeSessionId: null,
         stripeUrl: null
     });
+    const [restaurant, setRestaurant] = useState<IRestaurant>();
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [guests, setGuests] = useState(1);
 
-    console.log("booking ", booking)
+    useEffect(() => {
+        let total = 0;
+        for (let item of initialCartItems) {
+            total += item.price;
+            const storedCartItem = cart.getCartItems().find(ci => ci.itemId === item.id);
+            if (storedCartItem) {
+                item.quantity = storedCartItem.quantity;
+            }
+        }
+        console.log("ВСТАВИЛ")
+        setTotalPrice(total);
+    }, [initialCartItems]);
+
+    useEffect(() => {
+        const res = cart.getRestaurant();
+        if (res) {
+            console.log("SET")
+            setRestaurant(res)
+        }
+    }, [])
+
 
     const handleRemove = (id: number) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== id));
@@ -42,14 +65,19 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
             return {
                 ...prevState,
                 timeStart: prevState.timeStart,
-                timeEnd: prevState.timeEnd
+                timeEnd: prevState.timeEnd,
+                guests: guests
             }
         });
 
         const dateStart = booking.timeStart.split('T')[0];
+        const timeStart = booking.timeStart.split('T')[1].slice(0, 5);
         const dateEnd = booking.timeEnd.split('T')[0];
+        const timeEnd = booking.timeEnd.split('T')[1].slice(0, 5);
 
-        if (dateStart !== dateEnd || booking.timeStart >= booking.timeEnd) {
+        if ((dateStart !== dateEnd || booking.timeStart >= booking.timeEnd)
+            || (restaurant && (timeStart >= restaurant.timeClosed || timeStart <= restaurant.timeOpen))
+            || (restaurant && (timeEnd >= restaurant.timeClosed || timeEnd <= restaurant.timeOpen))) {
             setToastMessage('Укажите корректное время!')
             setShowToast(true);
             return;
@@ -58,6 +86,10 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
             window.location.href = r
         });
     }
+
+    const handleGuestsChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setGuests(e.target.valueAsNumber);
+    };
 
     const handleTimeChange = (date: string, time: string) => {
         setBooking((prevState) => {
@@ -79,9 +111,14 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
 
 
     return (
-        <div>
+        <div className={"container skill-bx"}>
             <div className="cart-name wow zoomIn">
                 <h1>Корзина</h1>
+                <div>
+                    <p>Заказ в ресторане: <span>{restaurant?.name}</span></p>
+                    <p>Время работы: {restaurant?.timeOpen} - {restaurant?.timeClosed}</p>
+                    <p>Общая стоимость: {totalPrice}</p>
+                </div>
             </div>
             <div className="d-flex justify-content-center pt-5">
                 <div className="restaurant-list d-flex justify-content-around gap-3 flex-wrap">
@@ -90,7 +127,6 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
                             <CartItem
                                 key={item.id}
                                 item={item}
-                                quantity={1}
                                 onRemove={() => handleRemove(item.id)}
                             />
                         ))
@@ -100,17 +136,23 @@ const CartPage: React.FC<{ initialCartItems: Array<IMenuItem> }> = ({initialCart
                 </div>
             </div>
             {cartItems.length > 0 && (
-                <div>
-                    <TimePicker
-                        label="Выберете время начала брони"
-                        time={booking.timeStart}
-                        onTimeChange={(date, time) => handleTimeChange(date, time)}
-                    />
-                    <TimePicker
-                        label="Выберете время окончания брони"
-                        time={booking.timeEnd}
-                        onTimeChange={(date, time) => handleTimeEndChange(date, time)}
-                    />
+                <div className={"mt-3"}>
+                    <div className={"d-flex justify-content-center gap-2 flex-row flex-wrap"}>
+                        <TimePicker
+                            label="Выберете время начала брони"
+                            time={booking.timeStart}
+                            onTimeChange={(date, time) => handleTimeChange(date, time)}
+                        />
+                        <TimePicker
+                            label="Выберете время окончания брони"
+                            time={booking.timeEnd}
+                            onTimeChange={(date, time) => handleTimeEndChange(date, time)}
+                        />
+                    </div>
+                    <div className={"m-auto w-25 d-flex justify-content-center flex-column"}>
+                        <Form.Label>Количество гостей:</Form.Label>
+                        <Form.Control type={"number"} min={1} defaultValue={1} onChange={handleGuestsChange}/>
+                    </div>
                     <div className="m-auto w-25 d-flex justify-content-center">
                         <button className="cafe-button" type='submit' onClick={handleBooking}>Бронировать</button>
                     </div>

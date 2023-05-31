@@ -77,15 +77,6 @@ const userApi = {
         }
     },
 
-
-
-
-
-
-
-
-
-
     async getCurrentUser() {
         try {
             const response = await uAxios.get('/auth/me');

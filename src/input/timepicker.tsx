@@ -12,7 +12,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ time, onTimeChange, label }) =>
     const timeValue = time.split('T')[1].slice(0, 5);
 
     return (
-        <div className="d-flex flex-column gap-1 p-2 w-25 m-auto">
+        <div className="d-flex flex-column gap-1 p-2 col-3">
             <Form.Label>{label}</Form.Label>
             <Form.Control
                 type="date"

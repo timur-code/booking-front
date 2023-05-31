@@ -58,7 +58,7 @@ const Profile: React.FC<ProfileProps> = ({userProp}) => {
     return (
         <div>
             <div className={"m-auto w-50"}>
-                <h1>Profile</h1>
+                <h1>Профиль</h1>
                 <Form className={"w-50"} onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Label>Ваше имя</Form.Label>

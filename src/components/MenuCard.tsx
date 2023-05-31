@@ -31,9 +31,11 @@ const RestaurantCard: React.FC<MenuCardProps> = ({item, restaurantId, addToPreor
                 />
                     <div>
                         <h3>{item.name}</h3>
-                        <p>{item.description}</p>
-
-                        <button onClick={handleAdd} type="submit" className="card-button">Add</button>
+                        <div className={"d-flex flex-column mb-2"}>
+                            <div>{item.description}</div>
+                            <div>Цена: {item.price}</div>
+                        </div>
+                        <button onClick={handleAdd} type="submit" className="card-button">Добавить</button>
                     </div>
             </div>
         </div>

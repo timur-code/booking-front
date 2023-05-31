@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import IMenuItem from "@component/models/IMenuItem";
-import mainApi from "@component/mixin/mainApi";
 
 
 interface CartItemProps {
     item: IMenuItem;
-    quantity: number | undefined;
     onRemove: () => void;
 
 }
 
-const CartItem: React.FC<CartItemProps> = ({ item, quantity, onRemove }) => {
-    console.log("item", item)
+const CartItem: React.FC<CartItemProps> = ({ item, onRemove }) => {
     const cardStyle = {
         backgroundImage: (item && item.images.length > 0) ? `url(${item.images[0]})` : 'url(/item.jpg)',
         backgroundSize: 'cover',
@@ -27,12 +24,11 @@ const CartItem: React.FC<CartItemProps> = ({ item, quantity, onRemove }) => {
             />
                 <div>
                     <h3>{item.name}</h3>
-                    <p>{item.description}</p>
-
-                    <button onClick={onRemove} type="submit" className="card-button">Remove from Cart</button>
+                    <div>{item.description}</div>
+                    <div>Количество: {item.quantity}</div>
+                    <div>Цена: {item.price}</div>
+                    <button onClick={onRemove} type="submit" className="card-button">Убрать из корзины</button>
                 </div>
-            {/*<button onClick={() => onUpdate(quantity ? quantity + 1 : 0)}>+</button>*/}
-            {/*<button onClick={() => onUpdate(quantity ? quantity - 1 : 0)}>-</button>*/}
             </div>
         </div>
     );

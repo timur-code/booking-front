@@ -1,5 +1,5 @@
 import {GetServerSideProps} from 'next';
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import mainApi from "@component/mixin/mainApi";
 import IRestaurant from "@component/models/IRestaurant";
 import IMenu from "@component/models/IMenu";
@@ -12,13 +12,14 @@ import {getLocalTimeZone, now} from "@internationalized/date";
 
 
 interface RestaurantProps {
-    id: number;
+    initRestaurant: IRestaurant;
+    initMenu: IMenu;
 }
 
-const Restaurant: React.FC<RestaurantProps> = ({id}) => {
+const Restaurant: React.FC<RestaurantProps> = ({initRestaurant, initMenu}) => {
     const [showToast, setShowToast] = React.useState(false);
-    const [restaurant, setRestaurant] = useState<IRestaurant>();
-    const [menu, setMenu] = useState<IMenu>();
+    const [restaurant, setRestaurant] = useState<IRestaurant>(initRestaurant);
+    const [menu, setMenu] = useState<IMenu>(initMenu);
     const [shouldCreateBooking, setShouldCreateBooking] = useState(false);
     const [toastMessage, setToastMessage] = React.useState('');
     const [toastVariant, setToastVariant] = React.useState('success');
@@ -26,7 +27,7 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         id: null,
         restaurant: null,
         userId: '',
-        restaurantId: id,
+        restaurantId: initRestaurant.id,
         timeStart: now(getLocalTimeZone()).toString(),
         timeEnd: now(getLocalTimeZone()).toString(),
         guests: 1,
@@ -34,32 +35,17 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         stripeUrl: null,
         preorder: []
     });
-    console.log("cart: ", cart)
+    const [guests, setGuests] = useState(1);
 
     const handleAdd = (id: number) => {
         if (restaurant) {
-            cart.addToCart(restaurant.id, id)
+            cart.addToCart(restaurant, id)
         }
         setToastVariant('success')
         setToastMessage('Предмет добавлен в корзину!')
         setShowToast(true)
         console.log("cart: ", cart)
     };
-
-    useEffect(() => {
-        if (shouldCreateBooking) {
-            mainApi.createBooking(booking).then(resId => {
-                setBooking((prevState) => {
-                    return {
-                        ...prevState,
-                        id: resId
-                    };
-                });
-            });
-            setShouldCreateBooking(false);
-        }
-    }, [booking, shouldCreateBooking]);
-
 
     const handleTimeChange = (date: string, time: string) => {
         setBooking((prevState) => {
@@ -84,20 +70,25 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
             return {
                 ...prevState,
                 timeStart: prevState.timeStart,
-                timeEnd: prevState.timeEnd
+                timeEnd: prevState.timeEnd,
+                guests: guests
             }
         });
         const dateStart = booking.timeStart.split('T')[0];
+        const timeStart = booking.timeStart.split('T')[1].slice(0, 5);
         const dateEnd = booking.timeEnd.split('T')[0];
+        const timeEnd = booking.timeEnd.split('T')[1].slice(0, 5);
 
-        if (dateStart !== dateEnd || booking.timeStart >= booking.timeEnd) {
+        if ((dateStart !== dateEnd || booking.timeStart >= booking.timeEnd)
+            || (restaurant && (timeStart >= restaurant.timeClosed || timeStart <= restaurant.timeOpen))
+            || (restaurant && (timeEnd >= restaurant.timeClosed || timeEnd <= restaurant.timeOpen))) {
             setToastVariant("danger")
             setToastMessage('Укажите корректное время!')
             setShowToast(true);
             return;
         }
-        mainApi.createBooking(booking).then(res => {
-            if (res.length > 0) {
+        mainApi.createBookingNoPreorder(booking).then(res => {
+            if (res) {
                 setToastVariant('success')
                 setToastMessage('Вы успешно забронировали кафе без предзаказа!')
                 setShowToast(true)
@@ -105,38 +96,21 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
         });
     }
 
-    useEffect(() => {
-        const fetchRestaurant = async () => {
-            try {
-                return await mainApi.getRestaurantById(id);
-            } catch (error) {
-                console.error('Failed to fetch restaurants:', error);
-            }
-        };
-        const fetchMenu = async () => {
-            try {
-                return await mainApi.getRestaurantMenuById(id);
-            } catch (error) {
-                console.error('Failed to fetch menu:', error);
-            }
-        };
 
-
-        fetchRestaurant().then(res => setRestaurant(res));
-
-        fetchMenu().then(res => setMenu(res));
-
-    }, []);
+    const handleGuestsChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setGuests(e.target.valueAsNumber);
+    };
 
     return (
         <section className="skill" id="skills">
-            <div className="container skill-bx">
+            <div className="container skill-bx p-2 pt-4">
                 <div className="wow zoomIn">
                     <h1>{restaurant?.name}</h1>
                     <p>{restaurant?.description}</p>
+                    <p>Время работы: {restaurant?.timeOpen} - {restaurant?.timeClosed}</p>
                 </div>
-                <p>Сделайте бронь через нашу систему! Авторизуйтесь, укажите время для брони!</p>
-                <div>
+                <p className={"mb-3"}>Сделайте бронь через нашу систему! Авторизуйтесь, укажите время для брони!</p>
+                <div className={"d-flex justify-content-center gap-2 flex-row flex-wrap"}>
                     <TimePicker
                         label="Выберете время начала брони"
                         time={booking.timeStart}
@@ -147,16 +121,22 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
                         time={booking.timeEnd}
                         onTimeChange={(date, time) => handleTimeEndChange(date, time)}
                     />
-                    <div className="m-auto w-25 d-flex justify-content-center">
-                        <button className="cafe-button" type='submit' onClick={handleBooking}>Бронировать</button>
-                    </div>
+                </div>
+                <div className={"m-auto w-25 d-flex justify-content-center flex-column"}>
+                    <Form.Label>Количество гостей:</Form.Label>
+                    <Form.Control type={"number"} min={1} defaultValue={1} onChange={handleGuestsChange}/>
+                </div>
+                <div className="m-auto w-25 d-flex justify-content-center">
+                    <button className="cafe-button" type='submit' onClick={handleBooking}>Бронировать</button>
                 </div>
                 <p>Или вы можете выбрать блюда из этого меню и оформить бронирование в нашей корзине!</p>
+            </div>
+            <div className="container skill-bx mt-5 p-2">
                 {
                     menu &&
                     <MenuList
                         menu={menu}
-                        restaurantId={id}
+                        restaurant={restaurant}
                         addToPreorder={handleAdd}
                     />
                 }
@@ -186,14 +166,18 @@ const Restaurant: React.FC<RestaurantProps> = ({id}) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<RestaurantProps> = async (context) => {
     const {id} = context.query;
 
     const validId = typeof id === 'string' ? id : '';
 
+    const restaurant = await mainApi.getRestaurantById(validId);
+    const menu = await mainApi.getRestaurantMenuById(validId);
+
     return {
         props: {
-            id: validId
+            initRestaurant: restaurant,
+            initMenu: menu
         },
     };
 };

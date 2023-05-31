@@ -9,12 +9,12 @@ type SuccessPageProps = {
 
 const SuccessPage: React.FC<SuccessPageProps> = ({ bookingId, isBookingSuccessful }) => {
     return (
-        <div>
+        <div className={"d-flex justify-content-center p-5"}>
             {isBookingSuccessful ? (
-                <>
-                    <h1>Thank you for your order</h1>
-                    <p>Your booking ID is: {bookingId}</p>
-                </>
+                <div className={"col-3"}>
+                    <h1>Спасибо за ваш заказ</h1>
+                    <h2>Пожалуйста, заходите ещё!</h2>
+                </div>
             ) : (
                 <p>Sorry, something went wrong with your order. Please try again.</p>
             )}
@@ -35,8 +35,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
             body: JSON.stringify({userId})
         });
-
-        console.log("RESULT: ", res);
 
         if (res.ok) {
             isBookingSuccessful = true;

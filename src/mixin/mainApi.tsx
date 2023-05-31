@@ -1,41 +1,71 @@
 import {reAxios} from "../../axios";
-import IRestaurant from "@component/models/IRestaurant";
 import IMenu from "@component/models/IMenu";
 import IBooking from "@component/models/IBooking";
 import ICartItem from "@component/models/ICartItem";
-import ISupportRequest from "@component/models/ISupportRequest";
 
 
 const mainApi = {
-    async listRestaurant() {
+    async listRestaurant(pageNum: number) {
+
         try {
-            const response = await reAxios.get('/restaurant/list');
-            const fetchedRestaurants: IRestaurant[] = response.data.content.map((item: any) => ({
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                img: item.img
-            }));
-            return fetchedRestaurants;
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BOOKING_SERVICE}/restaurant/list?page=${pageNum}&size=6`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            return res;
         } catch (error: any) {
             throw error;
         }
     },
 
-    async getRestaurantById(id: number) {
+    async getRestaurantById(id: string) {
         try {
-            const response = await reAxios.get(`/restaurant/${id}`);
-            return response.data.data;
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BOOKING_SERVICE}/restaurant/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            return res.data;
         } catch (error: any) {
             throw error.response.data;
         }
     },
 
-    async getRestaurantMenuById(id: number) {
+    async getRestaurantMenuById(id: string) {
         try {
-            const response = await reAxios.get(`/restaurant/${id}/menu`);
-            console.log("response menu: ", response.data.data)
-            return response.data.data as IMenu;
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BOOKING_SERVICE}/restaurant/${id}/menu`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
+            }
+
+            const res = await response.json();
+            return res.data;
         } catch (error: any) {
             throw error.response.data;
         }
@@ -73,8 +103,16 @@ const mainApi = {
     async createBooking(booking: IBooking) {
         try {
             const response = await reAxios.post(`/booking`, booking);
-            console.log("response temp booking: ", response.data)
-            return response.data.data.stripeUrl
+            return response.data.data.stripeUrl;
+        } catch (error: any) {
+            throw error.response;
+        }
+    },
+
+    async createBookingNoPreorder(booking: IBooking) {
+        try {
+            const response = await reAxios.post(`/booking`, booking);
+            return response.data;
         } catch (error: any) {
             throw error.response;
         }

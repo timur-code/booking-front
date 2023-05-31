@@ -12,6 +12,10 @@ const AdminRestaurantIndex = () => {
     const [adminPhone, setAdminPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [image, setImage] = useState<string>('');
+    const [timeOpen, setTimeOpen] = useState<string>('');
+    const [timeClosed, setTimeClosed] = useState<string>('');
+    const [location, setLocation] = useState<string>('');
+
     const [error, setError] = useState<string>('');
     const router = useRouter();
 
@@ -39,6 +43,18 @@ const AdminRestaurantIndex = () => {
         setImage(e.target.value);
     };
 
+    const handleTimeOpenChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setTimeOpen(`${e.target.value}:00`);
+    };
+
+    const handleTimeClosedChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setTimeClosed(`${e.target.value}:00`);
+    };
+
+    const handleLocationChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setLocation(e.target.value);
+    };
+
     const checkLength = () => {
         if (name.length === 0) {
             throw new Error('Введите название')
@@ -54,6 +70,15 @@ const AdminRestaurantIndex = () => {
         }
         if (password.length < 6) {
             throw new Error('Минимальная длинна пароля 6')
+        }
+        if (timeOpen.length < 8) {
+            throw new Error('Укажите время')
+        }
+        if (timeClosed.length < 8) {
+            throw new Error('Укажите время')
+        }
+        if (location.length === 0) {
+            throw new Error('Введите адрес')
         }
     }
 
@@ -76,11 +101,13 @@ const AdminRestaurantIndex = () => {
                 name,
                 description,
                 seats,
+                location,
+                timeOpen,
+                timeClosed,
                 adminPhone,
                 password,
                 image
             });
-            console.log("RESTAURANT success: ", data);
             await router.push("/admin/restaurant")
 
         } catch (err: any) {
@@ -109,6 +136,18 @@ const AdminRestaurantIndex = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Картинка</Form.Label>
                             <Form.Control type="text" placeholder="Введите ссылку" onChange={handleImageChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Адрес</Form.Label>
+                            <Form.Control type="text" placeholder="Введите адрес" onChange={handleLocationChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Время открытия</Form.Label>
+                            <Form.Control type="time" placeholder="Введите время открытия" onChange={handleTimeOpenChange}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Время закрытия</Form.Label>
+                            <Form.Control type="time" placeholder="Введите время закрытия" onChange={handleTimeClosedChange}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Номер телефона администратора ресторана</Form.Label>

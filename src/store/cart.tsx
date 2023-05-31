@@ -1,26 +1,32 @@
 import CartItem from "@component/models/ICartItem";
 import Cookies from "js-cookie";
+import IRestaurant from "@component/models/IRestaurant";
 
 
 class Cart {
     private items: Array<CartItem>;
     private restaurantId: number | null;
+    private restaurant: IRestaurant | null;
 
     constructor() {
         const tempCart = this.getCartItemsFromStorage();
         if (tempCart != null) {
             this.items = this.getCartItemsFromStorage().items || [];
             this.restaurantId = this.getCartItemsFromStorage().restaurantId || null;
+            this.restaurant = this.getCartItemsFromStorage().restaurant || null;
         } else {
             this.items = [];
             this.restaurantId = null;
+            this.restaurant = null;
         }
     }
 
-    addToCart(restaurantId: number, itemId: number) {
+    addToCart(restaurant: IRestaurant, itemId: number) {
+        const restaurantId = restaurant.id
         if (restaurantId !== this.restaurantId) {
             this.items = [];
             this.restaurantId = restaurantId;
+            this.restaurant = restaurant;
         }
 
         const existingIndex = this.items.findIndex((item) => item.itemId === itemId);
@@ -44,6 +50,10 @@ class Cart {
 
     getRestaurantId() {
         return this.restaurantId;
+    }
+
+    getRestaurant() {
+        return this.restaurant;
     }
 
     private saveCartToStorage() {

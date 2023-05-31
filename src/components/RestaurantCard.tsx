@@ -9,10 +9,6 @@ interface RestaurantProps {
 }
 
 const RestaurantCard: React.FC<RestaurantProps> = ({restaurant}) => {
-    const handleClick = async (restaurant: IRestaurant) => {
-        console.log("Click")
-        await Router.push(`/restaurant/${restaurant.id}`);
-    }
 
     const cardStyle = {
         backgroundImage: restaurant.image ? `url(${restaurant.image})` : 'url(/item.jpg)',
@@ -23,19 +19,22 @@ const RestaurantCard: React.FC<RestaurantProps> = ({restaurant}) => {
     return (
         <div className="border-card">
             <div className="wrap-card">
-                <Link className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded text-decoration-none"
-                      href={`/restaurant/${restaurant.id}`}
-                      style={cardStyle}
+                <Link
+                    href={`/restaurant/${restaurant.id}`}
+                    className="lister-card border border-success mb-2 border-opacity-25 d-flex rounded text-decoration-none"
+                    style={cardStyle}
                 >
-                <div className="loop-action-card">
-                    <a href="" className="add-to-cart">Choose</a>
-                </div>
+                    <div className="loop-action-card">
+                        <div>
+                            Открыть
+                        </div>
+                    </div>
                 </Link>
                 <h3>{restaurant.name}</h3>
-                <p>{restaurant.description}</p>
+                <div>{restaurant.description}</div>
+                <div>{restaurant.location}</div>
             </div>
         </div>
-
     );
 };
 

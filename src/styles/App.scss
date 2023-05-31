@@ -630,7 +630,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .border-card:hover .loop-action-card {
     opacity: 1;
 }
-.loop-action-card a {
+.loop-action-card div {
     text-decoration: none;
     display: block;
     border: 1px solid white;
@@ -648,7 +648,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     margin: 5px auto;
     transition: .3s ease-in-out;
 }
-.loop-action-card a:after {
+.loop-action-card div:after {
     content: '';
     position: absolute;
     left: -220%;
@@ -660,10 +660,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     z-index: -1;
     transition: .3s ease-in-out;
 }
-.loop-action-card a:hover {
+.loop-action-card div:hover {
     color: black;
 }
-.loop-action-card a:hover:after {
+.loop-action-card div:hover:after {
     left: 0%;
 }
 .border-card:hover {
@@ -672,6 +672,17 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .product-info-card {
     padding-top: 15px;
 }
+.custom-pagination .page-link {
+    background-color: black;
+    color: white;
+    border-color: #AA367C;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #AA367C;
+    border-color: #AA367C;
+}
+
 
 
 

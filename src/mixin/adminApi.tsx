@@ -301,7 +301,7 @@ const adminApi = {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(JSON.stringify(errorData));
+                throw new Error(JSON.stringify(errorData.error));
             }
         } catch
             (error: any) {

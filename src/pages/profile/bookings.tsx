@@ -52,11 +52,9 @@ export const getServerSideProps: GetServerSideProps<BookingsPageProps> = async (
 };
 
 const BookingsPage: React.FC<BookingsPageProps> = ({ bookings }) => {
-    console.log("Res Array: ", bookings)
-
     return (
         <div>
-            <h1 className="w-50 d-flex flex-row flex-wrap m-auto ">Bookings</h1>
+            <h1 className="w-50 d-flex flex-row flex-wrap m-auto ">Ваши Брони</h1>
             <div className="w-50 d-flex flex-row flex-wrap m-auto gap-2">
                 {bookings.map((booking) => (
                     <BookingCard key={booking.id} booking={booking} restaurant={booking.restaurant}/>
