@@ -307,6 +307,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 .skill {
     padding: 0 0 50px 0;
+
     position: relative;
 }
 .skill-bx {
@@ -343,6 +344,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     width: 40%;
     z-index: -4;
 }
+/************ Modals ************/
+.Modals{
+    pointer-events: none;
+}
+
 /************ Cards ************/
 .cart-name{
     margin-top: 20px;
@@ -364,9 +370,12 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     padding: 10px 10px;
     color: #fff;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     border-radius: 18px;
     text-align: center;
+
+    border-style: solid;
+    border-color: black;
 }
 
 
@@ -569,6 +578,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 /************ Login ************/
 .login-modal{
+    pointer-events: none;
     width: 300px;
     margin: 0 auto;
     background: #B8B8B8;
@@ -580,7 +590,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 /************ Cards ************/
 .border-card {
-    width: 300px;
+    width: 260px;
     margin: 0 auto;
     background: rgb(0,0,0);
     background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(19,8,13,0.8071603641456583) 50%, rgba(0,0,0,1) 100%);

@@ -11,7 +11,7 @@ export const Banner = () => {
     const [text, setText] = useState('');
     const [delta, setDelta] = useState(300 - Math.random() * 100);
     const [index, setIndex] = useState(1);
-    const toRotate = [ "Foods", "Drinks", "Desserts and etc." ];
+    const toRotate = [ "еды", "напитков", "десертов" ];
     const period = 2000;
 
     useEffect(() => {
@@ -55,10 +55,9 @@ export const Banner = () => {
                         <TrackVisibility>
                             {({ isVisible }) =>
                                 <div className={isVisible ? "animate__animated animate__fadeIn" : ""}>
-                                    <span className="tagline">Table reservation system</span>
-                                    <h1>{`Pre-ordering`} <span className="txt-rotate" data-rotate='[ "Foods", "Drinks", "Desserts and etc." ]'><span className="wrap">{text}</span></span></h1>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                    <button onClick={() => console.log('connect')}>Let’s Connect <ArrowRightCircle size={25} /></button>
+                                    <span className="tagline">Бронирования столиков и предзаказ еды</span>
+                                    <h1>{`Предзаказ`} <span className="txt-rotate" data-rotate='[ "Еды", "Напитков", "Десертов и тд." ]'><span className="wrap">{text}</span></span></h1>
+                                    <p> Сервис предзаказа еды и бронирования столов - все для вашего комфорта и наслаждения! Откройте мир вкусов с нами: выберите из разнообразных меню, предварительно заказывайте блюда, чтобы избежать ожидания, и бронируйте идеальные места для встреч в уютных ресторанах.Экономьте время и наслаждайтесь беззаботными гастрономическими приключениями!</p>npm
                                 </div>}
                         </TrackVisibility>
                     </Col>

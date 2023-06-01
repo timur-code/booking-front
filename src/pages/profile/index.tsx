@@ -57,9 +57,9 @@ const Profile: React.FC<ProfileProps> = ({userProp}) => {
 
     return (
         <div>
-            <div className={"m-auto w-50"}>
+            <div className={"m-auto w-50 container skill-bx mt-2 mb-2"}>
                 <h1>Профиль</h1>
-                <Form className={"w-50"} onSubmit={handleSubmit}>
+                <Form className={"w-50 justify-content-center pt-5 container"} onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Label>Ваше имя</Form.Label>
                         <Form.Control type="text" value={user.firstName} onChange={handleFirstNameChange}/>
@@ -72,7 +72,7 @@ const Profile: React.FC<ProfileProps> = ({userProp}) => {
                         <Form.Label>Ваш телефон</Form.Label>
                         <Form.Control readOnly disabled={true} type="tel" value={user.phone}/>
                     </Form.Group>
-                    <Button className={"mt-3"} type="submit">Изменить</Button>
+                    <Button className={"mt-5 cafe-button " } type="submit">Изменить</Button>
                 </Form>
             </div>
 

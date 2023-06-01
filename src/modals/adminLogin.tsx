@@ -35,7 +35,7 @@ const AdminLoginModal: React.FC<IModalProps> = ({onClose, show}) => {
     };
 
     return (
-        <Modal show={show} onHide={onClose}>
+        <Modal show={show} onHide={onClose} className="Modals">
             <Modal.Header closeButton>
                 <Modal.Title>Вход</Modal.Title>
             </Modal.Header>
